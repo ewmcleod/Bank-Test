@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/netsu/Documents/Code/C++/Fun/Banking Application/Bank.cpp
+/home/emcleod/Banking-System/Bank.cpp
 iostream
 -
 fstream
@@ -14,25 +14,25 @@ fstream
 iomanip
 -
 Bank.h
-/home/netsu/Documents/Code/C++/Fun/Banking Application/Bank.h
+/home/emcleod/Banking-System/Bank.h
 User.h
-/home/netsu/Documents/Code/C++/Fun/Banking Application/User.h
+/home/emcleod/Banking-System/User.h
 
-/home/netsu/Documents/Code/C++/Fun/Banking Application/Bank.h
+/home/emcleod/Banking-System/Bank.h
 string
 -
 
-/home/netsu/Documents/Code/C++/Fun/Banking Application/User.cpp
+/home/emcleod/Banking-System/User.cpp
 User.h
-/home/netsu/Documents/Code/C++/Fun/Banking Application/User.h
+/home/emcleod/Banking-System/User.h
 
-/home/netsu/Documents/Code/C++/Fun/Banking Application/User.h
+/home/emcleod/Banking-System/User.h
 string
 -
 
-/home/netsu/Documents/Code/C++/Fun/Banking Application/main.cpp
+/home/emcleod/Banking-System/main.cpp
 iostream
 -
 Bank.h
-/home/netsu/Documents/Code/C++/Fun/Banking Application/Bank.h
+/home/emcleod/Banking-System/Bank.h
 

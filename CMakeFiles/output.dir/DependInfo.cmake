@@ -1,17 +1,16 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "CXX"
   )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/emcleod/Banking-System/Bank.cpp" "/home/emcleod/Banking-System/CMakeFiles/output.dir/Bank.cpp.o"
-  "/home/emcleod/Banking-System/User.cpp" "/home/emcleod/Banking-System/CMakeFiles/output.dir/User.cpp.o"
-  "/home/emcleod/Banking-System/main.cpp" "/home/emcleod/Banking-System/CMakeFiles/output.dir/main.cpp.o"
-  )
-set(CMAKE_CXX_COMPILER_ID "GNU")
 
-# The include file search paths:
-set(CMAKE_CXX_TARGET_INCLUDE_PATH
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/Users/emcleod/Bank-Test/Bank.cpp" "CMakeFiles/output.dir/Bank.cpp.o" "gcc" "CMakeFiles/output.dir/Bank.cpp.o.d"
+  "/Users/emcleod/Bank-Test/User.cpp" "CMakeFiles/output.dir/User.cpp.o" "gcc" "CMakeFiles/output.dir/User.cpp.o.d"
+  "/Users/emcleod/Bank-Test/main.cpp" "CMakeFiles/output.dir/main.cpp.o" "gcc" "CMakeFiles/output.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links.

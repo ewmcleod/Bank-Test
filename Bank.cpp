@@ -960,7 +960,8 @@ bool Bank::createAccount(){ //allows user to create new account
         std::cout <<  "2) Savings Account" << std::endl;
         std::cout << "Your Option: ";
 
-        int option = optionExists(option);
+        int option = 4;
+	option = optionExists(option);
         switch (option){
             case 1:
                 accountType = 'C';

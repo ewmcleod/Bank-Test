@@ -630,7 +630,8 @@ void Bank::displayAccount(){ //display current user account
 void Bank::withdraw(){
     interest = getInterest();
     std::cout << "You currently have " << user->getBalance() << " in your account.\nHow much would you like to withdraw? Amount: ";
-    double amount = optionExists(amount);
+    double amount  = 0;
+	amount = optionExists(amount);
     interest /= 100; //if interest was 7.14, then it is now 0.0714 (7.14%)
     interest *= amount; //gets 7.14% from amount being withdrawn
 
@@ -882,7 +883,7 @@ bool Bank::login(){ //allows user to log in
     std::cout << "2) Use Existing Account" << std::endl;
     std::cout << "Your Option: ";
 
-    int option;  
+    int option = 5;  
     std::cin >> option;
     if(!std::cin){
         // std::cout << "\nNo such option exists... Please try again." << std::endl;

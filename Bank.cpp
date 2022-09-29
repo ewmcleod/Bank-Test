@@ -277,7 +277,7 @@ void Bank::editAccount(){
     std::cout << "0) Exit" << std::endl;
     std::cout << "Your option: ";
     
-    int option;
+    int option = 9;
     option = optionExists(option);
     std::string strChange, oldUsername, oldPassword;
     char charChange, oldAccountType, oldAdminRights, seperator = ','; 
@@ -661,7 +661,8 @@ void Bank::withdraw(){
 
 void Bank::deposit(){ //put money into user account
     std::cout << "You currently have " << user->getBalance() << " in your account.\nHow much would you like to deposit? Amount: ";
-    double amount = optionExists(amount);
+    double amount = 0;
+	amount  = optionExists(amount);
 
     if(amount < 5){ //why? so they can pay tax on what they put into their accounts
         std::cout << "You can only deposit a minimum of 5..." << std::endl;
@@ -993,7 +994,8 @@ bool Bank::createAccount(){ //allows user to create new account
 
         user->setPassword(password);
         user->setUserName(username);
-        user->setAccountType(accountType);
+        accountType='Y';
+	user->setAccountType(accountType);
         user->setBalance(balance);
         user->setAdmin('0');
 

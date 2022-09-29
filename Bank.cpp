@@ -444,6 +444,7 @@ std::string Bank::displaySpecificAccount_return(){ //displays specific account, 
         std::ifstream FileUsers("users.dat");
         std::string pusername, password, line, result;
         char accountType, seperator = ',';
+	accountType = 'Z';
         double balance;
         char admin;
 

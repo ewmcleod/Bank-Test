@@ -375,6 +375,7 @@ void Bank::displaySpecificAccount(){
         std::ifstream FileUsers("users.dat");
         std::string line, pusername, password;
         char accountType, admin, seperator = ',';
+	accountType='Z';
         double balance;
 
         while(getline(FileUsers, line)){ 
@@ -510,6 +511,7 @@ std::string Bank::displaySpecificAccount_mute(std::string username){
         std::ifstream FileUsers("users.dat");
         std::string pusername, password, line, result;
         char accountType, seperator = ',';
+	accountType = 'Z';
         double balance;
         char admin;
 
@@ -562,6 +564,7 @@ void Bank::displayAllAccounts(){ //displays all existing accounts
 
         std::string username, password;
         char accountType, seperator = ',';
+	accountType = 'Z';
         double balance;
         char admin;
 

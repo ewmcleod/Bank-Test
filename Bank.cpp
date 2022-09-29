@@ -53,7 +53,7 @@ void Bank::displayMenu(){
     std::cout << "0) Exit" << std::endl;
 
     std::cout << "Your Option: ";
-    int option;  
+    int option=5;  
     std::cin >> option;
     if(!std::cin){
         // std::cout << "\nNo such option exists... Please try again." << std::endl;
@@ -145,7 +145,8 @@ void Bank::transferMoney(){
     
     if(checkAccountExists(rUsername)){
         std::cout << "How much do you want to deposit? (interest: " << getInterest() << "%): ";
-        double cash = optionExists(cash);
+        double cash = 0.00; 
+	cash = optionExists(cash);
         double totalCost = cash + (cash * getInterest() / 100);
         if (user->getBalance() < totalCost){
             std::cout << "You do not have enough money to transfer " << cash << ". (You need a minimum of " << totalCost << " to transfer amount)\nPlease try again (0 to cancel)" << std::endl;

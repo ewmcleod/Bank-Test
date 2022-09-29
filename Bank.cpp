@@ -1024,6 +1024,7 @@ bool Bank::checkAccountExists(std::string pusername){
 bool Bank::checkAccountExists(std::string pusername, std::string ppassword){
     std::string line, username, password;
     char accountType, seperator = ',', admin;
+	accountType = 'Z';
     double balance;
     
 	std::ifstream FileUser("users.dat"); //gets input from the file

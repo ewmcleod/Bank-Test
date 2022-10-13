@@ -3,6 +3,7 @@ node {
     workspace = env.WORKSPACE
 }
 withCoverityEnvironment() {
+	coverityInstanceUrl = $COVERITY_HOST
   // execute any coverity commands with either `sh` or `bat` script step
   //  (all Coverity Tools in /bin available on PATH)
   // By default, Coverity Connect Instance information will be avaible in following environment variables

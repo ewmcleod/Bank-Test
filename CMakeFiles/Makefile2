@@ -54,10 +54,10 @@ RM = cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = ../Bank-Test
+CMAKE_SOURCE_DIR = ../
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = ../Bank-Test
+CMAKE_BINARY_DIR = ../
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/output.dir/clean
 CMakeFiles/output.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/output.dir/build.make CMakeFiles/output.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/output.dir/build.make CMakeFiles/output.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/emcleod/Bank-Test/CMakeFiles --progress-num=1,2,3,4 "Built target output"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/CMakeFiles --progress-num=1,2,3,4 "Built target output"
 .PHONY : CMakeFiles/output.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/output.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start ../Bank-Test/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/output.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start ../Bank-Test/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /CMakeFiles 0
 .PHONY : CMakeFiles/output.dir/rule
 
 # Convenience name for target.

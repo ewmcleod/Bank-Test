@@ -2,6 +2,18 @@ def workspace
 node {
     workspace = env.WORKSPACE
 }
+withCoverityEnv(coverityToolName: 'default', connectInstance: 'Coverity Connect Instance Name') {
+  // execute any coverity commands with either `sh` or `bat` script step
+  //  (all Coverity Tools in /bin available on PATH)
+  // By default, Coverity Connect Instance information will be avaible in following environment variables
+  //
+  // HOST -> COVERITY_HOST
+  // PORT -> COVERITY_PORT
+  // USER -> COV_USER
+  // PASSWORD -> COVERITY_PASSPHRASE
+  //
+  // Users can customize all the above default environment variables
+}
 pipeline {
     agent any
 

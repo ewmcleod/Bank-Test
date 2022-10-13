@@ -54,10 +54,10 @@ RM = cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = ../
+CMAKE_SOURCE_DIR = .
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = ../
+CMAKE_BINARY_DIR = .
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -86,9 +86,9 @@ CMakeFiles/output.dir/all:
 
 # Build rule for subdir invocation for target.
 CMakeFiles/output.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/emcleod/Bank-Test/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/output.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/emcleod/Bank-Test/CMakeFiles 0
 .PHONY : CMakeFiles/output.dir/rule
 
 # Convenience name for target.

@@ -2,7 +2,7 @@ def workspace
 node {
     workspace = env.WORKSPACE
 }
-withCoverityEnv(coverityToolName: 'default', connectInstance: 'Coverity Connect Instance Name') {
+withCoverityEnvironment(coverityToolName: 'default', connectInstance: 'Coverity Connect Instance Name') {
   // execute any coverity commands with either `sh` or `bat` script step
   //  (all Coverity Tools in /bin available on PATH)
   // By default, Coverity Connect Instance information will be avaible in following environment variables

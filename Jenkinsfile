@@ -10,9 +10,9 @@ pipeline {
             steps {
                 echo 'Building..'
 		sh 'make clean'
-		sh 'cov-build --dir ${WORKSPACE}/idir make'
-		sh 'cov-analyze --dir ${WORKSPACE}/idir
-		sh 'cov-commit-defects --dir ${WORKSPACE}/idir --host ${COVERITY_HOST} --stream ${COV_STREAM}'
+		sh 'cov-build --dir idir make'
+		sh 'cov-analyze --dir idir
+		sh 'cov-commit-defects --dir idir --host ${COVERITY_HOST} --stream ${COV_STREAM}'
             }
         }
         stage('Test') {

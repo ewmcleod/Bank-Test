@@ -6,9 +6,6 @@ pipeline {
             steps {
                 echo 'Building..'
 		sh 'make clean'
-		sh 'cov-build --dir ${WORKSPACE}/idir make'
-		sh 'cov-analyze --dir ${WORKSPACE}/idir
-		sh 'cov-commit-defects --dir ${WORKSPACE}/idir --host ${COVERITY_HOST} --port ${COVERITY_PORT} --stream ${COV_STREAM}'
             }
         }
         stage('Test') {

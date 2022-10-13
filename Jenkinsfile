@@ -8,8 +8,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
-		sh 'make clean'
+                echo 'Building...'
 		sh 'cov-build --dir ${WORKSPACE}/idir  make'
 		sh 'cov-analyze --dir ${WORKSPACE}/idir'
 		sh 'cov-commit-defects --dir ${WORKSPACE}/idir --host ${COVERITY_HOST} --stream ${COV_STREAM}'

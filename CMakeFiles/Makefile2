@@ -45,19 +45,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/homebrew/Cellar/cmake/3.24.2/bin/cmake
+CMAKE_COMMAND = cmake
 
 # The command to remove a file.
-RM = /opt/homebrew/Cellar/cmake/3.24.2/bin/cmake -E rm -f
+RM = cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/emcleod/Bank-Test
+CMAKE_SOURCE_DIR = ../Bank-Test
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/emcleod/Bank-Test
+CMAKE_BINARY_DIR = ../Bank-Test
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -86,9 +86,9 @@ CMakeFiles/output.dir/all:
 
 # Build rule for subdir invocation for target.
 CMakeFiles/output.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/emcleod/Bank-Test/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start ../Bank-Test/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/output.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/emcleod/Bank-Test/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start ../Bank-Test/CMakeFiles 0
 .PHONY : CMakeFiles/output.dir/rule
 
 # Convenience name for target.

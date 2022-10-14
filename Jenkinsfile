@@ -13,7 +13,7 @@ pipeline {
 viewName: ''){
 			sh 'cov-build --dir ${WORKSPACE}/idir  make'
 			sh 'cov-analyze --dir ${WORKSPACE}/idir'
-			sh 'cov-commit-defects --dir ${WORKSPACE}/idir --host ${COVERITY_HOST} --stream ${COV_STREAM}'
+			sh 'cov-commit-defects --dir ${WORKSPACE}/idir --url ${COVERITY_HOST} --stream ${COV_STREAM}'
 		}
             }
         }

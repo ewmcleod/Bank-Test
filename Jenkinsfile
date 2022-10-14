@@ -9,7 +9,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-		withCoverityEnvironment{
+		withCoverityEnvironment(coverityInstanceUrl: 'http://us1a-eng-emcleod.nprd.sig.synopsys.com:8080', projectName: 'bankapp', streamName: 'bankapp', 
+viewName: ''){
 			sh 'cov-build --dir ${WORKSPACE}/idir  make'
 			sh 'cov-analyze --dir ${WORKSPACE}/idir'
 			sh 'cov-commit-defects --dir ${WORKSPACE}/idir --host ${COVERITY_HOST} --stream ${COV_STREAM}'

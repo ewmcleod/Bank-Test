@@ -8,7 +8,7 @@ pipeline {
     environment {
         CONNECT = 'https://us1a-eng-emcleod.nprd.sig.synopsys.com:8443'
         PROJECT = 'bankapp'
-        BLDCMD = 'make'
+        BLDCMD = 'make clean all'
         CHECKERS = '--webapp-security --enable-callgraph-metrics'
         COVERITY_NO_LOG_ENVIRONMENT_VARIABLES = '1'
     }
@@ -31,8 +31,6 @@ pipeline {
                     steps {
                         withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$GIT_BRANCH") {
                             sh '''
-                                cov-configure --template --compiler cc --comptype gcc
-                                cov-configure --template --compiler c++ --comptype g++
                                 cov-build --dir  ${WORKSPACE}/idir  $BLDCMD
                                 cov-analyze --dir  ${WORKSPACE}/idir --strip-path $WORKSPACE $CHECKERS
                                 cov-commit-defects --dir  ${WORKSPACE}/idir --ticker-mode none --url $COV_URL --stream $COV_STREAM \

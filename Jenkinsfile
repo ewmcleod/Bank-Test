@@ -3,7 +3,7 @@ node {
     workspace = env.WORKSPACE
 }
 pipeline {
-    agent { label 'linux64' }
+    agent any
     
     environment {
         CONNECT = 'https://us1a-eng-emcleod.nprd.sig.synopsys.com:8443/'
@@ -37,7 +37,7 @@ pipeline {
                     steps {
                         withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$BRANCH_NAME") {
                             sh '''
-                                cov-build --dir idir --fs-capture-search $WORKSPACE $BLDCMD
+                                cov-build --dir idir $WORKSPACE $BLDCMD
                                 cov-analyze --dir idir --ticker-mode none --strip-path $WORKSPACE $CHECKERS
                                 cov-commit-defects --dir idir --ticker-mode none --url $COV_URL --stream $COV_STREAM \
                                     --description $BUILD_TAG --version $GIT_COMMIT

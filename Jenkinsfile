@@ -10,7 +10,6 @@ pipeline {
         PROJECT = 'bankapp'
         BLDCMD = 'make clean all'
         CHECKERS = '--webapp-security --enable-callgraph-metrics'
-        COVERITY_NO_LOG_ENVIRONMENT_VARIABLES = '1'
         CREDS = 'emcleod_authkey'
     }
 

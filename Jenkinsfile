@@ -28,11 +28,6 @@ pipeline {
         stage('Security Testing') {
             parallel {
                 stage('Coverity Full Scan') {
-                    when {
-                        allOf {
-                            not { changeRequest() }
-                            expression { GIT_BRANCH ==~ /(main|stage|release)/ }
-                        }
                     }
                     steps {
                         withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$GIT_BRANCH") {
@@ -50,12 +45,6 @@ pipeline {
                     }
                 }
                 stage('Coverity Incremental Scan') {
-                    when {
-                        allOf {
-                            changeRequest()
-                            expression { CHANGE_TARGET ==~ /(main|stage|release)/ }
-                        }
-                    }
                     steps {
                         withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$CHANGE_TARGET") {
                             sh '''

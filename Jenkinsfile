@@ -9,7 +9,7 @@ pipeline {
         CONNECT = 'https://us1a-eng-emcleod.nprd.sig.synopsys.com:8443'
         PROJECT = 'bankapp'
         BLDCMD = 'make clean all'
-        CHECKERS = '--webapp-security --enable-callgraph-metrics'\
+        CHECKERS = '--webapp-security --enable-callgraph-metrics'
         BRANCH = ${GIT_BRANCH,fullName=false}
     }
 

@@ -31,6 +31,8 @@ pipeline {
                     steps {
                         withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$GIT_BRANCH") {
                             sh '''
+                                cov-configure --template --compiler cc --comptype gcc
+                                cov-configure --template --compiler c++ --comptype g++
                                 cov-build --dir  ${WORKSPACE}/idir  $BLDCMD
                                 cov-analyze --dir  ${WORKSPACE}/idir --strip-path $WORKSPACE $CHECKERS
                                 cov-commit-defects --dir  ${WORKSPACE}/idir --ticker-mode none --url $COV_URL --stream $COV_STREAM \

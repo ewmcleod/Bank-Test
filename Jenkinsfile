@@ -28,7 +28,6 @@ pipeline {
         stage('Security Testing') {
             parallel {
                 stage('Coverity Full Scan') {
-                    }
                     steps {
                         withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$GIT_BRANCH") {
                             sh '''

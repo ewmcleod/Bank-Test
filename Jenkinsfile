@@ -31,11 +31,11 @@ pipeline {
                     when {
                         allOf {
                             not { changeRequest() }
-                            expression { BRANCH_NAME ==~ /(main|stage|release)/ }
+                            expression { GIT_BRANCH ==~ /(main|stage|release)/ }
                         }
                     }
                     steps {
-                        withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$BRANCH_NAME") {
+                        withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$GIT_BRANCH") {
                             sh '''
                                 cov-build --dir idir $WORKSPACE $BLDCMD
                                 cov-analyze --dir idir --ticker-mode none --strip-path $WORKSPACE $CHECKERS

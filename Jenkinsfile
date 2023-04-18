@@ -10,6 +10,7 @@ pipeline {
         PROJECT = 'bankapp'
         BLDCMD = 'make clean all'
         CHECKERS = '--webapp-security --enable-callgraph-metrics'
+        BRANCH = "${GIT_BRANCH,fullName=false}"
     }
 
     stages {
@@ -28,11 +29,11 @@ pipeline {
             parallel {
                 stage('Coverity Full Scan') {
                     steps {
-                        withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: $PROJECT-"${GIT_BRANCH,fullName=false}", createMissingProjectsAndStreams: true) {
+                        withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$BRANCH", createMissingProjectsAndStreams: true) {
                             sh '''
                                 cov-build --dir  ${WORKSPACE}/idir  $BLDCMD
                                 cov-analyze --dir  ${WORKSPACE}/idir --strip-path $WORKSPACE $CHECKERS
-                                cov-commit-defects --dir  ${WORKSPACE}/idir --auth-key-file $COV_AUTH_KEY_PATH --ticker-mode none --url $COV_URL --stream $COV_STREAM \
+                                cov-commit-defects --dir  ${WORKSPACE}/idir  --ticker-mode none --url $COV_URL --stream $COV_STREAM \
                                     --description $BUILD_TAG --version $GIT_COMMIT
                             '''
                             script { // Coverity Quality Gate

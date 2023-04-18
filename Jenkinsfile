@@ -28,7 +28,7 @@ pipeline {
             parallel {
                 stage('Coverity Full Scan') {
                     steps {
-                        withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$GIT_BRANCH", createMissingProjectsAndStreams: true) {
+                        withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-${GIT_BRANCH,fullName=false}", createMissingProjectsAndStreams: true) {
                             sh '''
                                 cov-build --dir  ${WORKSPACE}/idir  $BLDCMD
                                 cov-analyze --dir  ${WORKSPACE}/idir --strip-path $WORKSPACE $CHECKERS

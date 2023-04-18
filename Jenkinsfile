@@ -6,7 +6,7 @@ pipeline {
     agent any
     
     environment {
-        CONNECT = 'https://us1a-eng-emcleod.nprd.sig.synopsys.com:8443/'
+        CONNECT = 'https://us1a-eng-emcleod.nprd.sig.synopsys.com:8443'
         PROJECT = 'bankapp'
         BLDCMD = 'make'
         CHECKERS = '--webapp-security --enable-callgraph-metrics'

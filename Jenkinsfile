@@ -10,7 +10,6 @@ pipeline {
         PROJECT = 'bankapp'
         BLDCMD = 'make clean all'
         CHECKERS = '--webapp-security --enable-callgraph-metrics'
-        CREDS = 'emcleod_authkey'
     }
 
     stages {
@@ -29,7 +28,7 @@ pipeline {
             parallel {
                 stage('Coverity Full Scan') {
                     steps {
-                        withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", credentialsId: "$CREDS" , projectName: "$PROJECT", streamName: "$PROJECT-$env.BRANCH_NAME", createMissingProjectsAndStreams: true) {
+                        withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$env.BRANCH_NAME", createMissingProjectsAndStreams: true) {
                             sh '''
                                 cov-build --dir  ${WORKSPACE}/idir  $BLDCMD
                                 cov-analyze --dir  ${WORKSPACE}/idir --strip-path $WORKSPACE $CHECKERS

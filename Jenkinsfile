@@ -36,7 +36,7 @@ pipeline {
                                     --description $BUILD_TAG --version $GIT_COMMIT
                             '''
                             script { // Coverity Quality Gate
-                                count = coverityIssueCheck(viewName: 'OWASP Web Top 10', returnIssueCount: true)
+                                count = coverityIssueCheck(viewName: 'Newly detected Issues', returnIssueCount: true)
                                 if (count != 0) { unstable 'issues detected' }
                             }
                         }

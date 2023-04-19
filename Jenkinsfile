@@ -10,7 +10,7 @@ pipeline {
         PROJECT = 'bankapp'
         BLDCMD = 'make clean all'
         CHECKERS = '--webapp-security --enable-callgraph-metrics'
-        BRANCH = '${GIT_BRANCH,fullName=false}'
+        BRANCH = "${GIT_BRANCH,fullName=false}"
     }
 
     stages {

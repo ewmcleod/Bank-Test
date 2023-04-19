@@ -13,7 +13,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                sh 'make'
+                sh '$BLDCMD'
                 }
         }
         stage('Test') {
@@ -28,10 +28,8 @@ pipeline {
                         withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$BRANCH", createMissingProjectsAndStreams: true) {
                             sh '''
                                 cov-build --dir idir $BLDCMD
-                                pwd
-                                cov-manage-emit --dir idir list
                                 cov-analyze --dir idir --strip-path $WORKSPACE $CHECKERS
-                                cov-commit-defects --dir  idir  --ticker-mode none --url $COV_URL --stream $COV_STREAM \
+                                cov-commit-defects --dir idir ---url $COV_URL --stream $COV_STREAM \
                                     --description $BUILD_TAG --version $GIT_COMMIT
                             '''
                             script { // Coverity Quality Gate

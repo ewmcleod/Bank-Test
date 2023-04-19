@@ -29,7 +29,8 @@ pipeline {
                             sh '''
                                 cov-build --dir idir $BLDCMD
                                 pwd
-                                cov-analyze --dir idir --strip-path ./ $CHECKERS
+                                cov-manage-emit --dir idr list
+                                cov-analyze --dir idir --strip-path $WORKSPACE $CHECKERS
                                 cov-commit-defects --dir  idir  --ticker-mode none --url $COV_URL --stream $COV_STREAM \
                                     --description $BUILD_TAG --version $GIT_COMMIT
                             '''

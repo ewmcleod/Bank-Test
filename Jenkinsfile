@@ -27,8 +27,8 @@ pipeline {
                     steps {
                         withCoverityEnvironment(coverityInstanceUrl: "$CONNECT", projectName: "$PROJECT", streamName: "$PROJECT-$BRANCH", createMissingProjectsAndStreams: true) {
                             sh '''
-                                cov-build --dir idir  $BLDCMD
-                                cov-analyze --dir  idir  $CHECKERS
+                                cov-build --dir idir $WORKSPACE $BLDCMD
+                                cov-analyze --dir idir --strip-path $WORKSPACE $CHECKERS
                                 cov-commit-defects --dir  idir  --ticker-mode none --url $COV_URL --stream $COV_STREAM \
                                     --description $BUILD_TAG --version $GIT_COMMIT
                             '''

@@ -29,7 +29,7 @@ pipeline {
                             sh '''
                                 cov-build --dir idir $BLDCMD
                                 cov-analyze --dir idir --strip-path $WORKSPACE $CHECKERS
-                                cov-commit-defects --dir idir ---url $COV_URL --stream $COV_STREAM \
+                                cov-commit-defects --dir idir --url $COV_URL --stream $COV_STREAM \
                                     --description $BUILD_TAG --version $GIT_COMMIT
                             '''
                             script { // Coverity Quality Gate

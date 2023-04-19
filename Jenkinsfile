@@ -1,7 +1,3 @@
-def workspace
-node {
-    workspace = env.WORKSPACE
-}
 pipeline {
     agent any
     

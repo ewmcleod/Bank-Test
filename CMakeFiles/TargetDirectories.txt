@@ -1,3 +1,0 @@
-/home/emcleod/Bank-Test/CMakeFiles/rebuild_cache.dir
-/home/emcleod/Bank-Test/CMakeFiles/edit_cache.dir
-/home/emcleod/Bank-Test/CMakeFiles/output.dir

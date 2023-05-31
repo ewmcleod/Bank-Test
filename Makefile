@@ -1,5 +1,5 @@
 # tool macros
-CXX := /Applications/cov-analysis-macos-arm-2023.3.0/bin/cov-translate --dir idir --run-compile g++
+CXX := cov-translate --dir idir --run-compile g++
 CXXFLAGS :=
 DBGFLAGS := -g
 CCOBJFLAGS := $(CXXFLAGS) -c

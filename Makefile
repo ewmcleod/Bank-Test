@@ -1,4 +1,6 @@
-CFLAGS := --target=x86_64-apple-darwin20.3.0
+CXXFLAGS :=
+DBGFLAGS := -g
+CCOBJFLAGS := $(CXXFLAGS) -c
 
 # path macros
 BIN_PATH := bin

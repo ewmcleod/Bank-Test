@@ -1,8 +1,4 @@
-# tool macros
-CXX := cov-translate --dir idir --run-compile g++
-CXXFLAGS :=
-DBGFLAGS := -g
-CCOBJFLAGS := $(CXXFLAGS) -c
+CFLAGS := --target=x86_64-apple-darwin20.3.0
 
 # path macros
 BIN_PATH := bin

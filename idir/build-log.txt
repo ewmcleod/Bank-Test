@@ -1,0 +1,695 @@
+2023-09-12T14:55:40.852808Z|cov-build|91142|info|> cov-build 2023.9.0 (build 801eb59666 p-2023.9-push-59)
+2023-09-12T14:55:40.852970Z|cov-build|91142|info|> Coverity Build Capture (64-bit) version 2023.9.0 on Darwin 22.5.0 arm64
+2023-09-12T14:55:40.852970Z|cov-build|91142|info|> Internal version numbers: 801eb59666 p-2023.9-push-59
+2023-09-12T14:55:40.852970Z|cov-build|91142|info|> 
+2023-09-12T14:55:40.852988Z|cov-build|91142|info|> Dumping from hostname : snps-coypekjxug4t
+2023-09-12T14:55:40.852988Z|cov-build|91142|info|> 
+2023-09-12T14:55:40.852994Z|cov-build|91142|info|> Platform info:
+2023-09-12T14:55:40.852994Z|cov-build|91142|info|> Sysname = Darwin
+2023-09-12T14:55:40.852994Z|cov-build|91142|info|> Release = 22.5.0
+2023-09-12T14:55:40.852994Z|cov-build|91142|info|> Machine = arm64
+2023-09-12T14:55:40.852994Z|cov-build|91142|info|> 
+2023-09-12T14:55:40.852994Z|cov-build|91142|info|> 
+2023-09-12T14:55:40.853011Z|cov-build|91142|info|> cov-build command: cov-build --dir idir make all 
+2023-09-12T14:55:40.853015Z|cov-build|91142|info|> cov-build expanded command: cov-build --dir idir make all 
+2023-09-12T14:55:40.853058Z|cov-build|91142|info|> Set COVERITY_IS_MACOS13 to 1
+2023-09-12T14:55:41.055032Z|cov-build|91142|info|> Set COVERITY_MACOS_PROCESS_ARCH to 0
+2023-09-12T14:55:41.055075Z|cov-build|91142|info|> Set COVERITY_MACOS_RUN_UNDER_ARCH to 0
+2023-09-12T14:55:41.096830Z|cov-build|91142|info|> build command: /opt/homebrew/Cellar/make/4.4.1/bin/gmake all
+2023-09-12T14:55:41.096872Z|cov-build|91142|info|> thunk command: /var/folders/t7/p6nm5vl12d3djr11kvy9s3gw0000gn/T/cov-emcleod/adf1b5ce8d42986a9219ca38661d6099/sh /Applications/cov-analysis-macos-arm-2023.9.0/bin/cov-internal-thunk.sh make all
+2023-09-12T14:55:41.096872Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.096885Z|cov-build|91142|info|> Set UseSharedCompilation to false.
+2023-09-12T14:55:41.096898Z|cov-build|91142|info|> Set COVERITY_BIN to /Applications/cov-analysis-macos-arm-2023.9.0/bin
+2023-09-12T14:55:41.096909Z|cov-build|91142|info|> Set COVERITY_SITE_CC to Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x64.dll;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x64.exe;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x86.dll;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x86.exe;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation.dll;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation.exe;apt;csc;csc.dll;csc2;devenv;dotnet;g++;gcc;jar;java;javac;javaw;msbuild;razor
+2023-09-12T14:55:41.096914Z|cov-build|91142|info|> Set COVERITY_SITE_CC_CAPTURE_DESCENDANTS to dotnet
+2023-09-12T14:55:41.096920Z|cov-build|91142|info|> Set COVERITY_TEMP to /var/folders/t7/p6nm5vl12d3djr11kvy9s3gw0000gn/T/cov-emcleod/adf1b5ce8d42986a9219ca38661d6099
+2023-09-12T14:55:41.096930Z|cov-build|91142|info|> Set COVERITY_COMMON_TEMP to /var/folders/t7/p6nm5vl12d3djr11kvy9s3gw0000gn/T
+2023-09-12T14:55:41.096935Z|cov-build|91142|info|> Set COVERITY_IDIR to /Users/emcleod/Bank-Test/idir
+2023-09-12T14:55:41.096950Z|cov-build|91142|info|> Set COVERITY_OUTPUT to /Users/emcleod/Bank-Test/idir/build-log.txt
+2023-09-12T14:55:41.096954Z|cov-build|91142|info|> Set COVERITY_LOG to /Users/emcleod/Bank-Test/idir/build-log.txt
+2023-09-12T14:55:41.096965Z|cov-build|91142|info|> Set COVERITY_OUTPUT_ENCODING to UTF-8
+2023-09-12T14:55:41.096970Z|cov-build|91142|info|> Set COVERITY_SYSTEM_ENCODING to UTF-8
+2023-09-12T14:55:41.096975Z|cov-build|91142|info|> Set COVERITY_EMIT to /Users/emcleod/Bank-Test/idir/emit
+2023-09-12T14:55:41.096985Z|cov-build|91142|info|> Set COVERITY_EMIT to /Users/emcleod/Bank-Test/idir/emit
+2023-09-12T14:55:41.096994Z|cov-build|91142|info|> Set COVERITY_ENABLE_JAVA_PARSE_ERROR_RECOVERY to 1
+2023-09-12T14:55:41.097044Z|cov-build|91142|info|> Set COVERITY_JAVA_CONFIG to javac#TEMPLATE##java#TEMPLATE##apt#TEMPLATE##javaw#TEMPLATE###
+2023-09-12T14:55:41.097061Z|cov-build|91142|info|> Set COVERITY_SITE_CC_JVM to apt;java;javac;javaw
+2023-09-12T14:55:41.097085Z|cov-build|91142|info|> Set COVERITY_CONFIGURED_JVM_LANGUAGES to java
+2023-09-12T14:55:41.097113Z|cov-build|91142|info|> Set COVERITY_IS_COMPILER to 0
+2023-09-12T14:55:41.097126Z|cov-build|91142|info|> Set COVERITY_TOP_PROCESS to 0
+2023-09-12T14:55:41.097129Z|cov-build|91142|info|> Set COVERITY_IS_COMPILER_DESCENDANT to 0
+2023-09-12T14:55:41.097133Z|cov-build|91142|info|> Set COVERITY_DISENGAGE_EXES to "qemuwrapper;qemu-aarch64;qemu-alpha;qemu-arm;qemu-armeb;qemu-cris;qemu-i386;qemu-m68k;qemu-microblaze;qemu-mips;qemu-mipsel;qemu-nios2;qemu-ppc;qemu-ppc64;qemu-ppc64abi32;qemu-sh4;qemu-sh4eb;qemu-sparc;qemu-sparc32plus;qemu-sparc64;qemu-x86_64"
+2023-09-12T14:55:41.097154Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097154Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097154Z|cov-build|91142|info|> Dumping Environment Variables:
+2023-09-12T14:55:41.097154Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097171Z|cov-build|91142|info|> TERM_SESSION_ID=w0t0p0:1AB30451-8779-4C53-BFFC-A3D6EE9F5A23
+2023-09-12T14:55:41.097175Z|cov-build|91142|info|> SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.CapuAImJZs/Listeners
+2023-09-12T14:55:41.097179Z|cov-build|91142|info|> LC_TERMINAL_VERSION=3.4.20
+2023-09-12T14:55:41.097182Z|cov-build|91142|info|> COLORFGBG=15;0
+2023-09-12T14:55:41.097185Z|cov-build|91142|info|> ITERM_PROFILE=Default
+2023-09-12T14:55:41.097189Z|cov-build|91142|info|> XPC_FLAGS=0x0
+2023-09-12T14:55:41.097193Z|cov-build|91142|info|> LANG=en_US.UTF-8
+2023-09-12T14:55:41.097198Z|cov-build|91142|info|> PWD=/Users/emcleod/Bank-Test
+2023-09-12T14:55:41.097205Z|cov-build|91142|info|> SHELL=/bin/zsh
+2023-09-12T14:55:41.097208Z|cov-build|91142|info|> __CFBundleIdentifier=com.googlecode.iterm2
+2023-09-12T14:55:41.097211Z|cov-build|91142|info|> TERM_PROGRAM_VERSION=3.4.20
+2023-09-12T14:55:41.097214Z|cov-build|91142|info|> TERM_PROGRAM=iTerm.app
+2023-09-12T14:55:41.097216Z|cov-build|91142|info|> PATH=/Users/emcleod/bin:/usr/local/bin:/Applications/cov-analysis/bin:/opt/homebrew/opt/make/libexec/gnubin:/Applications/synopsys-bridge-macosx-0.1.272:/opt/local/bin:/opt/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/Applications/CyberArk EPM.app/Contents/Helpers:/Library/Apple/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin
+2023-09-12T14:55:41.097220Z|cov-build|91142|info|> LC_TERMINAL=iTerm2
+2023-09-12T14:55:41.097223Z|cov-build|91142|info|> COLORTERM=truecolor
+2023-09-12T14:55:41.097228Z|cov-build|91142|info|> COMMAND_MODE=unix2003
+2023-09-12T14:55:41.097230Z|cov-build|91142|info|> TERM=xterm-256color
+2023-09-12T14:55:41.097233Z|cov-build|91142|info|> HOME=/Users/emcleod
+2023-09-12T14:55:41.097236Z|cov-build|91142|info|> TMPDIR=/var/folders/t7/p6nm5vl12d3djr11kvy9s3gw0000gn/T/
+2023-09-12T14:55:41.097239Z|cov-build|91142|info|> USER=emcleod
+2023-09-12T14:55:41.097241Z|cov-build|91142|info|> XPC_SERVICE_NAME=0
+2023-09-12T14:55:41.097244Z|cov-build|91142|info|> LOGNAME=emcleod
+2023-09-12T14:55:41.097247Z|cov-build|91142|info|> ITERM_SESSION_ID=w0t0p0:1AB30451-8779-4C53-BFFC-A3D6EE9F5A23
+2023-09-12T14:55:41.097254Z|cov-build|91142|info|> __CF_USER_TEXT_ENCODING=0x0:0:0
+2023-09-12T14:55:41.097257Z|cov-build|91142|info|> SHLVL=1
+2023-09-12T14:55:41.097260Z|cov-build|91142|info|> OLDPWD=/Users/emcleod
+2023-09-12T14:55:41.097263Z|cov-build|91142|info|> HOMEBREW_PREFIX=/opt/homebrew
+2023-09-12T14:55:41.097265Z|cov-build|91142|info|> HOMEBREW_CELLAR=/opt/homebrew/Cellar
+2023-09-12T14:55:41.097268Z|cov-build|91142|info|> HOMEBREW_REPOSITORY=/opt/homebrew
+2023-09-12T14:55:41.097271Z|cov-build|91142|info|> MANPATH=/opt/local/share/man:/opt/homebrew/share/man::
+2023-09-12T14:55:41.097273Z|cov-build|91142|info|> INFOPATH=/opt/homebrew/share/info:
+2023-09-12T14:55:41.097276Z|cov-build|91142|info|> CDEV_polaris_accessToken=5hbnp60o0p2el6voad307ohv7rcr1pa3o2o4f8c097hgd7u5i0d7a2vd622h1m8amusm0eand4ase
+2023-09-12T14:55:41.097279Z|cov-build|91142|info|> ZSH=/Users/emcleod/.oh-my-zsh
+2023-09-12T14:55:41.097281Z|cov-build|91142|info|> AWS_PROFILE=sso_blackduck_admin_profile
+2023-09-12T14:55:41.097289Z|cov-build|91142|info|> EKSCTL_ENABLE_CREDENTIAL_CACHE=1
+2023-09-12T14:55:41.097292Z|cov-build|91142|info|> PAGER=less
+2023-09-12T14:55:41.097295Z|cov-build|91142|info|> LESS=-R
+2023-09-12T14:55:41.097298Z|cov-build|91142|info|> LSCOLORS=Gxfxcxdxbxegedabagacad
+2023-09-12T14:55:41.097301Z|cov-build|91142|info|> LS_COLORS=di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43
+2023-09-12T14:55:41.097303Z|cov-build|91142|info|> _=/opt/homebrew/Cellar/make/4.4.1/bin/gmake
+2023-09-12T14:55:41.097306Z|cov-build|91142|info|> COVERITY_PREV_XML_CATALOG_FILES=
+2023-09-12T14:55:41.097309Z|cov-build|91142|info|> COVERITY_TOP_CONFIG=/var/folders/t7/p6nm5vl12d3djr11kvy9s3gw0000gn/T/cov-emcleod/adf1b5ce8d42986a9219ca38661d6099/cov-configure/coverity_config.xml
+2023-09-12T14:55:41.097312Z|cov-build|91142|info|> COVERITY_BUILD_INVOCATION_ID=1
+2023-09-12T14:55:41.097315Z|cov-build|91142|info|> COVERITY_CONFIG_FILE=/Applications/cov-analysis-macos-arm-2023.9.0/config/coverity_config.xml
+2023-09-12T14:55:41.097317Z|cov-build|91142|info|> COVERITY_IS_MACOS13=1
+2023-09-12T14:55:41.097320Z|cov-build|91142|info|> COVERITY_MACOS_PROCESS_ARCH=0
+2023-09-12T14:55:41.097323Z|cov-build|91142|info|> COVERITY_MACOS_RUN_UNDER_ARCH=0
+2023-09-12T14:55:41.097325Z|cov-build|91142|info|> UseSharedCompilation=false
+2023-09-12T14:55:41.097328Z|cov-build|91142|info|> COVERITY_BIN=/Applications/cov-analysis-macos-arm-2023.9.0/bin
+2023-09-12T14:55:41.097331Z|cov-build|91142|info|> COVERITY_SITE_CC=Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x64.dll;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x64.exe;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x86.dll;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x86.exe;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation.dll;Microsoft.AspNetCore.Mvc.Razor.ViewCompilation.exe;apt;csc;csc.dll;csc2;devenv;dotnet;g++;gcc;jar;java;javac;javaw;msbuild;razor
+2023-09-12T14:55:41.097334Z|cov-build|91142|info|> COVERITY_SITE_CC_CAPTURE_DESCENDANTS=dotnet
+2023-09-12T14:55:41.097337Z|cov-build|91142|info|> COVERITY_TEMP=/var/folders/t7/p6nm5vl12d3djr11kvy9s3gw0000gn/T/cov-emcleod/adf1b5ce8d42986a9219ca38661d6099
+2023-09-12T14:55:41.097340Z|cov-build|91142|info|> COVERITY_COMMON_TEMP=/var/folders/t7/p6nm5vl12d3djr11kvy9s3gw0000gn/T
+2023-09-12T14:55:41.097342Z|cov-build|91142|info|> COVERITY_IDIR=/Users/emcleod/Bank-Test/idir
+2023-09-12T14:55:41.097345Z|cov-build|91142|info|> COVERITY_REWRITE_FROM=
+2023-09-12T14:55:41.097348Z|cov-build|91142|info|> COVERITY_REWRITE_TO=
+2023-09-12T14:55:41.097350Z|cov-build|91142|info|> COVERITY_ENABLE_JAVA_ANNOTATION_FRAMEWORK_SUPPORT=1
+2023-09-12T14:55:41.097353Z|cov-build|91142|info|> COVERITY_OUTPUT=/Users/emcleod/Bank-Test/idir/build-log.txt
+2023-09-12T14:55:41.097356Z|cov-build|91142|info|> COVERITY_LOG=/Users/emcleod/Bank-Test/idir/build-log.txt
+2023-09-12T14:55:41.097359Z|cov-build|91142|info|> COVERITY_OUTPUT_ENCODING=UTF-8
+2023-09-12T14:55:41.097362Z|cov-build|91142|info|> COVERITY_SYSTEM_ENCODING=UTF-8
+2023-09-12T14:55:41.097365Z|cov-build|91142|info|> COVERITY_EMIT=/Users/emcleod/Bank-Test/idir/emit
+2023-09-12T14:55:41.097367Z|cov-build|91142|info|> COVERITY_ENABLE_JAVA_PARSE_ERROR_RECOVERY=1
+2023-09-12T14:55:41.097370Z|cov-build|91142|info|> COVERITY_JAVA14_WARNING_FILE=/Users/emcleod/Bank-Test/idir/warn_about_java14_compilations
+2023-09-12T14:55:41.097374Z|cov-build|91142|info|> COVERITY_JAVA_CONFIG=javac#TEMPLATE##java#TEMPLATE##apt#TEMPLATE##javaw#TEMPLATE###
+2023-09-12T14:55:41.097377Z|cov-build|91142|info|> COVERITY_SITE_CC_JVM=apt;java;javac;javaw
+2023-09-12T14:55:41.097380Z|cov-build|91142|info|> COVERITY_CONFIGURED_JVM_LANGUAGES=java
+2023-09-12T14:55:41.097383Z|cov-build|91142|info|> COVERITY_ENABLE_CECS_WATCHDOG=1
+2023-09-12T14:55:41.097387Z|cov-build|91142|info|> COVERITY_IS_COMPILER=0
+2023-09-12T14:55:41.097389Z|cov-build|91142|info|> COVERITY_TOP_PROCESS=0
+2023-09-12T14:55:41.097392Z|cov-build|91142|info|> COVERITY_IS_COMPILER_DESCENDANT=0
+2023-09-12T14:55:41.097395Z|cov-build|91142|info|> COVERITY_DISENGAGE_EXES=qemuwrapper;qemu-aarch64;qemu-alpha;qemu-arm;qemu-armeb;qemu-cris;qemu-i386;qemu-m68k;qemu-microblaze;qemu-mips;qemu-mipsel;qemu-nios2;qemu-ppc;qemu-ppc64;qemu-ppc64abi32;qemu-sh4;qemu-sh4eb;qemu-sparc;qemu-sparc32plus;qemu-sparc64;qemu-x86_64
+2023-09-12T14:55:41.097401Z|cov-build|91142|info|> COVERITY_COMPILER_PATH_MISMATCH_FILE=/Users/emcleod/Bank-Test/idir/has_path_mismatches
+2023-09-12T14:55:41.097404Z|cov-build|91142|info|> COVERITY_PATHLESS_CONFIGS_FILE=/Users/emcleod/Bank-Test/idir/has_pathless_configs
+2023-09-12T14:55:41.097408Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097408Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097408Z|cov-build|91142|info|> Dumping configuration:
+2023-09-12T14:55:41.097408Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097416Z|cov-build|91142|info|> User/default configuration:
+2023-09-12T14:55:41.097416Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097420Z|cov-build|91142|info|> Configuration read from: command-line
+2023-09-12T14:55:41.097420Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097420Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097420Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/coverity_config.xml
+2023-09-12T14:55:41.097420Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097420Z|cov-build|91142|info|>     Node: prevent
+2023-09-12T14:55:41.097420Z|cov-build|91142|info|>       Node: dir Value: /Users/emcleod/Bank-Test/idir
+2023-09-12T14:55:41.097420Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-csc-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-msvc_devenv-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-msvc_msbuild-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-csc-config-1/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-csc-config-2/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-dotnet-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-1/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-2/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-3/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-4/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-5/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-6/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcc-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcxx-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-javac-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-java-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-apt-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-javaw-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-jar-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-jsp-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-android-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-capture-config-files-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-javascript-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-html-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-typescript-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-jsx-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|>     Node: include Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-vue-config-0/coverity_config.xml
+2023-09-12T14:55:41.097437Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-csc-config-0/coverity_config.xml
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>         Node: comp_name Value: csc
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>         Node: comp_translator Value: csc
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>         Node: comp_lang Value: C#
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>         Node: comp_generic Value: csc
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>         Node: id Value: csc-csc-.*
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|>   Node: md5 Value: fe090f9c5ade85b6791417ae28e7af34
+2023-09-12T14:55:41.097507Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-msvc_devenv-config-0/coverity_config.xml
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>         Node: comp_name Value: devenv
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>         Node: comp_translator Value: msvc_devenv
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>         Node: comp_lang Value: C
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>         Node: comp_generic Value: msvc
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>         Node: id Value: msvc_devenv-devenv-.*
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-msvc_devenv-config-0/../user_nodefs.h
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|>   Node: md5 Value: 9e7c8ebecfb66972e502b9a89af46eab
+2023-09-12T14:55:41.097541Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-msvc_msbuild-config-0/coverity_config.xml
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>         Node: comp_name Value: msbuild
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>         Node: comp_translator Value: msvc_msbuild
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>         Node: comp_lang Value: C
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>         Node: comp_generic Value: msvc
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>         Node: id Value: msvc_msbuild-msbuild-.*
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-msvc_msbuild-config-0/../user_nodefs.h
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|>   Node: md5 Value: e5c2e6f12a32bf80391c2b796b7efd24
+2023-09-12T14:55:41.097575Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-csc-config-1/coverity_config.xml
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>         Node: comp_name Value: csc2
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>         Node: comp_translator Value: csc
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>         Node: comp_lang Value: C#
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>         Node: comp_generic Value: csc
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>         Node: id Value: csc-csc2-.*
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|>   Node: md5 Value: 977437d947559cc8595a296b529da4b3
+2023-09-12T14:55:41.097608Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-csc-config-2/coverity_config.xml
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>         Node: comp_name Value: csc.dll
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>         Node: comp_translator Value: csc
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>         Node: comp_lang Value: C#
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>         Node: comp_generic Value: csc
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>         Node: id Value: csc-csc.dll-.*
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|>   Node: md5 Value: d7617a61a1e5d38ea17e0065e15a334c
+2023-09-12T14:55:41.097641Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-dotnet-config-0/coverity_config.xml
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>         Node: comp_name Value: dotnet
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>         Node: comp_translator Value: dotnet
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>         Node: comp_lang Value: C#
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>         Node: comp_capture_descendants Value: true
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>         Node: comp_generic Value: dotnet
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>         Node: id Value: dotnet-dotnet-.*
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|>   Node: md5 Value: c1f04f52f32e19ee321f007827420925
+2023-09-12T14:55:41.097671Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-0/coverity_config.xml
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>         Node: comp_name Value: razor
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>         Node: comp_translator Value: razor
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>         Node: comp_lang Value: Razor
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>         Node: comp_generic Value: razor
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>         Node: id Value: razor-razor-.*
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|>   Node: md5 Value: 299c29c5e1aed07e748c20434abece6a
+2023-09-12T14:55:41.097703Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-1/coverity_config.xml
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>         Node: comp_name Value: Microsoft.AspNetCore.Mvc.Razor.ViewCompilation.exe
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>         Node: comp_translator Value: razor
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>         Node: comp_lang Value: Razor
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>         Node: comp_generic Value: razor
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>         Node: id Value: razor-Microsoft.AspNetCore.Mvc.Razor.ViewCompilation.exe-.*
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|>   Node: md5 Value: b8062469abf35bf27e59c61097a25898
+2023-09-12T14:55:41.097736Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-2/coverity_config.xml
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>         Node: comp_name Value: Microsoft.AspNetCore.Mvc.Razor.ViewCompilation.dll
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>         Node: comp_translator Value: razor
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>         Node: comp_lang Value: Razor
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>         Node: comp_generic Value: razor
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>         Node: id Value: razor-Microsoft.AspNetCore.Mvc.Razor.ViewCompilation.dll-.*
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|>   Node: md5 Value: a9f1338dd3da86ae5a0b02feb72011bc
+2023-09-12T14:55:41.097767Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-3/coverity_config.xml
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>         Node: comp_name Value: Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x86.exe
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>         Node: comp_translator Value: razor
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>         Node: comp_lang Value: Razor
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>         Node: comp_generic Value: razor
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>         Node: id Value: razor-Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x86.exe-.*
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|>   Node: md5 Value: d148b26c0cca97f3cfbca9c9e97fbd2c
+2023-09-12T14:55:41.097800Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-4/coverity_config.xml
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>         Node: comp_name Value: Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x64.exe
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>         Node: comp_translator Value: razor
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>         Node: comp_lang Value: Razor
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>         Node: comp_generic Value: razor
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>         Node: id Value: razor-Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x64.exe-.*
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|>   Node: md5 Value: 4192dd38aff0a2b1f462f5ea2de56602
+2023-09-12T14:55:41.097836Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-5/coverity_config.xml
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>         Node: comp_name Value: Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x86.dll
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>         Node: comp_translator Value: razor
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>         Node: comp_lang Value: Razor
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>         Node: comp_generic Value: razor
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>         Node: id Value: razor-Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x86.dll-.*
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|>   Node: md5 Value: 9fac531b04a3ec13b4f2c7884a7b9d4d
+2023-09-12T14:55:41.097870Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-razor-config-6/coverity_config.xml
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>         Node: comp_name Value: Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x64.dll
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>         Node: comp_translator Value: razor
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>         Node: comp_lang Value: Razor
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>         Node: comp_generic Value: razor
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>         Node: id Value: razor-Microsoft.AspNetCore.Mvc.Razor.ViewCompilation-x64.dll-.*
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|>   Node: md5 Value: 42e63af2dc0e9a8129a530b0de6d639f
+2023-09-12T14:55:41.097903Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcc-config-0/coverity_config.xml
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: comp_name Value: gcc
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: comp_translator Value: clangcc
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: comp_lang Value: C
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: comp_generic Value: clang
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: comp_autodetect_type Value: clangcc:android
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: comp_autodetect_type Value: clangcc:apple
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: comp_autodetect_type Value: clangcc:llvm
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: comp_is_redirect Value: true
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: id Value: clangcc-gcc-.*
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcc-config-0/../user_nodefs.h
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: id Value: clangcxx-gcc-.*
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcc-config-0/../user_nodefs.h
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: id Value: clangcxxcc-gcc-.*
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcc-config-0/../user_nodefs.h
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: id Value: clangobjc-gcc-.*
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcc-config-0/../user_nodefs.h
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: id Value: clangobjcxx-gcc-.*
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcc-config-0/../user_nodefs.h
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|>   Node: md5 Value: b8e003ba6bbec3052da4999ada09ed1d
+2023-09-12T14:55:41.097938Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcxx-config-0/coverity_config.xml
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: comp_name Value: g++
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: comp_translator Value: clangcxx
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: comp_lang Value: C
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: comp_generic Value: clang
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: comp_autodetect_type Value: clangcxx:android
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: comp_autodetect_type Value: clangcxx:apple
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: comp_autodetect_type Value: clangcxx:llvm
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: comp_is_redirect Value: true
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: id Value: clangcxx-g++-.*
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcxx-config-0/../user_nodefs.h
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: id Value: clangcxxcc-g++-.*
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcxx-config-0/../user_nodefs.h
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: id Value: clangobjc-g++-.*
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcxx-config-0/../user_nodefs.h
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: id Value: clangobjcxx-g++-.*
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: opt_preinclude_file Value: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-clangcxx-config-0/../user_nodefs.h
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|>   Node: md5 Value: 3d9460fee9db7da994c1ad660cf9de46
+2023-09-12T14:55:41.098012Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-javac-config-0/coverity_config.xml
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>         Node: comp_name Value: javac
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>         Node: comp_translator Value: javac
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>         Node: comp_lang Value: Static Java
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>         Node: comp_generic Value: java
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>         Node: id Value: javac-javac-.*
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|>   Node: md5 Value: 4dff82855a5f75486f23dc3987a065c8
+2023-09-12T14:55:41.098076Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-java-config-0/coverity_config.xml
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>         Node: comp_name Value: java
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>         Node: comp_translator Value: java
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>         Node: comp_lang Value: Static Java
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>         Node: comp_generic Value: java
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>         Node: id Value: java-java-.*
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|>   Node: md5 Value: 670e0eff61ca6e268d4c53f998738922
+2023-09-12T14:55:41.098107Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-apt-config-0/coverity_config.xml
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>         Node: comp_name Value: apt
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>         Node: comp_translator Value: apt
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>         Node: comp_lang Value: Static Java
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>         Node: comp_generic Value: java
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>         Node: id Value: apt-apt-.*
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|>   Node: md5 Value: 0c3c17692884987df5fe47566993553e
+2023-09-12T14:55:41.098140Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-javaw-config-0/coverity_config.xml
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>         Node: comp_name Value: javaw
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>         Node: comp_translator Value: javaw
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>         Node: comp_lang Value: Static Java
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>         Node: comp_generic Value: java
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>         Node: id Value: javaw-javaw-.*
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|>   Node: md5 Value: aa3bf49b5164470df847ce74b96aa069
+2023-09-12T14:55:41.098179Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-jar-config-0/coverity_config.xml
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>         Node: comp_name Value: jar
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>         Node: comp_translator Value: jar
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>         Node: comp_generic Value: java
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>         Node: id Value: jar-jar-.*
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|>   Node: md5 Value: 33ddf2457cbbfcbe629d047272f2329e
+2023-09-12T14:55:41.098209Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-jsp-config-0/coverity_config.xml
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>         Node: comp_name Value: cov-filesystem-capture-jsp-0
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>         Node: comp_translator Value: jsp
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>         Node: comp_generic Value: java
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>         Node: file_include_pattern Value: ^.*\.(jsp|jspx)$
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>         Node: id Value: jsp-cov-filesystem-capture-jsp-0-.*
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|>   Node: md5 Value: 425f5b1409471a4a55890e518ffea917
+2023-09-12T14:55:41.098239Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-android-config-0/coverity_config.xml
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>         Node: comp_name Value: cov-filesystem-capture-android-0
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>         Node: comp_translator Value: android
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>         Node: comp_generic Value: java
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>         Node: file_include_pattern Value: ^.*(layout.*[/\\].*\.xml|AndroidManifest\.xml|gradlew|gradlew\.bat)$
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>         Node: id Value: android-cov-filesystem-capture-android-0-.*
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|>   Node: md5 Value: f656edef6880a9092fcbe3e2cd89f87a
+2023-09-12T14:55:41.098277Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-capture-config-files-config-0/coverity_config.xml
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>         Node: comp_name Value: cov-filesystem-capture-capture-config-files-0
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>         Node: comp_translator Value: capture-config-files
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>         Node: comp_generic Value: capture_config_files
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>         Node: file_include_pattern Value: $capture-config-files$
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>         Node: id Value: capture-config-files-cov-filesystem-capture-capture-config-files-0-.*
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|>   Node: md5 Value: b94e617f98adb465b84e44c2bb1187e2
+2023-09-12T14:55:41.098308Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-javascript-config-0/coverity_config.xml
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: comp_name Value: cov-filesystem-capture-javascript-0
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: comp_translator Value: javascript
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: comp_generic Value: javascript
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: file_include_pattern Value: ^.*\.(js|xsjs|xsjslib|cjs|mjs|map)$
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [.]cache[.]js$
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]node_modules[/\\]
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]jquery[^/\\]*[.]js$
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\][^/\\]*-vsdoc[.]js$
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: id Value: javascript-cov-filesystem-capture-javascript-0-.*
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|>   Node: md5 Value: 28137a21bdd7588523037a27a58d8c5c
+2023-09-12T14:55:41.098339Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-html-config-0/coverity_config.xml
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: comp_name Value: cov-filesystem-capture-html-0
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: comp_translator Value: html
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: comp_generic Value: javascript
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: file_include_pattern Value: ^.*\.(html|htm)$
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [.]cache[.]js$
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]node_modules[/\\]
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]jquery[^/\\]*[.]js$
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\][^/\\]*-vsdoc[.]js$
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: id Value: html-cov-filesystem-capture-html-0-.*
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|>   Node: md5 Value: d7d10d6a1e70369dda56aa898ef86396
+2023-09-12T14:55:41.098379Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-typescript-config-0/coverity_config.xml
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: comp_name Value: cov-filesystem-capture-typescript-0
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: comp_translator Value: typescript
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: comp_generic Value: typescript
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: file_include_pattern Value: ^.*(\.(ts|tsx|cts|mts)$)|(tsconfig.json)$
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [.]cache[.]js$
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]node_modules[/\\]
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]jquery[^/\\]*[.]js$
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\][^/\\]*-vsdoc[.]js$
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: id Value: typescript-cov-filesystem-capture-typescript-0-.*
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|>   Node: md5 Value: cf8788a68f3a4cc84a38e8030bdce56b
+2023-09-12T14:55:41.098418Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-jsx-config-0/coverity_config.xml
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: comp_name Value: cov-filesystem-capture-jsx-0
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: comp_translator Value: jsx
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: comp_generic Value: javascript
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: file_include_pattern Value: ^.*\.jsx$
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [.]cache[.]js$
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]node_modules[/\\]
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]jquery[^/\\]*[.]js$
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\][^/\\]*-vsdoc[.]js$
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: id Value: jsx-cov-filesystem-capture-jsx-0-.*
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|>   Node: md5 Value: 5d1e0d3949dd2e7d59d0ebbcb9d50844
+2023-09-12T14:55:41.098458Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|> Configuration read from: /Applications/cov-analysis-macos-arm-2023.9.0/config/template-vue-config-0/coverity_config.xml
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|> Node: coverity
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>   Node: cit_version Value: 1
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>   Node: config
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>     Node: build
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>       Node: compiler
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: template_compiler Value: true
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: comp_name Value: cov-filesystem-capture-vue-0
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: comp_translator Value: vue
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: comp_lang Value: Non Compiled
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: comp_generic Value: javascript
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: file_include_pattern Value: ^.*\.vue$
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [.]cache[.]js$
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]node_modules[/\\]
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\]jquery[^/\\]*[.]js$
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: file_exclude_pattern Value: [/\\][^/\\]*-vsdoc[.]js$
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>       Node: options
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: id Value: vue-cov-filesystem-capture-vue-0-.*
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>         Node: begin_command_line_config
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|>   Node: md5 Value: 366ed949b2aaae956ba72f463b10a2c2
+2023-09-12T14:55:41.098496Z|cov-build|91142|info|> 
+[91150] EXECUTING: /var/folders/t7/p6nm5vl12d3djr11kvy9s3gw0000gn/T/cov-emcleod/adf1b5ce8d42986a9219ca38661d6099/sh /Applications/cov-analysis-macos-arm-2023.9.0/bin/cov-internal-thunk.sh make all
+[91150] EXECUTING: make all
+2023-09-12T14:55:41.545962Z|cov-build|91142|info|> Invoking cov-security-da with commands: /Applications/cov-analysis-macos-arm-2023.9.0/bin/cov-security-da --dir /Users/emcleod/Bank-Test/idir
+2023-09-12T14:55:41.580305Z|cov-build|91142|info|> Dynamic analyzer took 34 ms
+2023-09-12T14:55:41.580305Z|cov-build|91142|info|> Build time (cov-build overall): 00:00:00.754267
+2023-09-12T14:55:41.580305Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.580305Z|cov-build|91142|info|> 
+2023-09-12T14:55:41.580433Z|cov-build|91142|info|> [WARNING] No files were emitted. This may be due to a problem with your configuration
+2023-09-12T14:55:41.580433Z|cov-build|91142|info|> or because no files were actually compiled by your build command.
+2023-09-12T14:55:41.580433Z|cov-build|91142|info|> Please make sure you have configured the compilers actually used in the compilation.
+2023-09-12T14:55:41.580433Z|cov-build|91142|info|>  For more details, please look at: 
+2023-09-12T14:55:41.580433Z|cov-build|91142|info|>     /Users/emcleod/Bank-Test/idir/build-log.txt

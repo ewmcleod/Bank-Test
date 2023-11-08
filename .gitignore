@@ -1,7 +1,0 @@
-.DS_Store
-.bridge/
-.vscode/
-idir
-input.json
-coverity.yaml
-.gitignore

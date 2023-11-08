@@ -1,9 +1,0 @@
-# Version: 801eb59666 p-2023.9-push-59
-# Command Line: /Applications/cov-analysis-macos-arm-2023.9.0/bin/cov-security-da --dir /Users/emcleod/Bank-Test/idir
-timer                         ms      calls
--------------------------------------------
-cov_security_da::run           4          1
-
-activity                      ms      calls
--------------------------------------------
-cov_security_da::run           4          1

@@ -1,4 +1,0 @@
-/Applications/cov-analysis-macos-arm-2023.9.0/bin/cov-security-da --dir /Users/emcleod/Bank-Test/idir 
-cov-security-da version 2023.9.0 on Darwin 22.5.0 arm64
-Internal version numbers: 801eb59666 p-2023.9-push-59
-

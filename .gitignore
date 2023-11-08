@@ -1,6 +1,7 @@
 .DS_Store
 .bridge/
-.vscode
+.vscode/
 idir
 input.json
 coverity.yaml
+.gitignore

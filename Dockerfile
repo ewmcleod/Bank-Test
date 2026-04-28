@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build the C++ application with Chainguard's GCC image.
-FROM cgr.dev/chainguard/gcc-glibc:latest AS build
+FROM cgr.dev/trineta.net/gcc-glibc:latest AS build
 
 WORKDIR /src
 
@@ -17,7 +17,7 @@ RUN mkdir -p /out \
     && if [ -f users.dat ]; then cp users.dat /out/users.dat; fi
 
 # Run with Chainguard's minimal glibc runtime image.
-FROM cgr.dev/chainguard/glibc-dynamic:latest
+FROM cgr.dev/trineta.net/glibc-dynamic:latest
 
 WORKDIR /app
 

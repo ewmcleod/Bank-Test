@@ -1,0 +1,12 @@
+.git
+.github
+.gitignore
+Dockerfile
+*.patch
+obj
+debug
+*.o
+*.out
+*.log
+.DS_Store
+README.md

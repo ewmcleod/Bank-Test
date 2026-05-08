@@ -1,36 +1,52 @@
-name: Image digest update
+name: Dependabot image diff enrichment
+
+# Runs on Dependabot PRs that bump container image digests, computes
+# `chainctl images diff` for each updated image, and appends the result
+# to the PR body so reviewers see the package/CVE delta.
+#
+# pull_request_target is required because:
+#   1. Dependabot PRs run with a read-only GITHUB_TOKEN under `pull_request`,
+#      so they can't edit the PR body.
+#   2. We need OIDC (id-token: write) for setup-chainctl, which only the
+#      base-branch token grants.
+# Safety: this workflow does NOT check out PR-controlled code. It only reads
+# the PR diff via the API and runs trusted scripts from the base branch.
 
 on:
-  workflow_dispatch:
-  schedule:
-    # Every day at 00:00 UTC
-    - cron: "0 0 * * *"
+  pull_request_target:
+    paths:
+      - "**/Dockerfile*"
+      - "**/*.yaml"
+      - "**/*.yml"
 
 concurrency:
-  group: digestabot
-  cancel-in-progress: false
+  group: dependabot-image-diff-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
-  image-update:
-    name: Image digest update
+  enrich:
+    if: github.actor == 'dependabot[bot]'
+    name: Enrich PR with chainctl images diff
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     permissions:
-      contents: write # to push the updates
-      pull-requests: write # to open Pull requests
-      id-token: write # OIDC token for setup-chainctl assumable-identity exchange
+      contents: read
+      pull-requests: write
+      id-token: write # OIDC token for setup-chainctl
 
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Checkout base ref (trusted)
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        ref: ${{ github.event.pull_request.base.sha }}
+        persist-credentials: false
 
-    # Authenticate with Chainguard so digestabot can pull the private org image
-    # to resolve the latest digest. Skip gracefully if identity not configured.
     - name: Check required configuration
       id: check-config
       run: |
         if [ -z "${{ vars.CHAINGUARD_IDENTITY }}" ]; then
-          echo "CHAINGUARD_IDENTITY not configured — skipping Chainguard auth."
+          echo "CHAINGUARD_IDENTITY not configured — skipping enrichment."
           echo "skip=true" >> $GITHUB_OUTPUT
         else
           echo "skip=false" >> $GITHUB_OUTPUT
@@ -42,16 +58,8 @@ jobs:
       with:
         identity: ${{ vars.CHAINGUARD_IDENTITY }}
 
-    - name: Run digestabot
-      id: digestabot
-      uses: chainguard-dev/digestabot@afe360aa3b0c29d88844138e8fa0349384398967 # v1.3.1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    # grype is required by chainctl images diff for vulnerability scanning.
-    # Pinned to a specific release with sha256 verification.
     - name: Install grype
-      if: ${{ steps.digestabot.outputs.pull_request_number != '' }}
+      if: steps.check-config.outputs.skip == 'false'
       env:
         GRYPE_VERSION: v0.112.0
         GRYPE_SHA256: acb14a030010fe9bdb9594b4ae108d9d14ef2f926d936aa0916dc62c89c058ea
@@ -62,20 +70,73 @@ jobs:
         echo "${GRYPE_SHA256}  grype.tar.gz" | sha256sum --check
         tar -xzf grype.tar.gz -C /usr/local/bin grype
 
-    # Compute chainctl images diff and update the PR body to match the format
-    # at https://github.com/chainguard-demo/digestabot-examples/pull/2
-    # Requires chainctl authenticated (setup-chainctl above) and grype in PATH.
-    - name: Compute chainctl image diff
-      if: ${{ steps.digestabot.outputs.pull_request_number != '' }}
+    - name: Build updates JSON from PR diff
+      if: steps.check-config.outputs.skip == 'false'
+      id: parse
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        # Fetch each changed file's patch and extract image@sha256 pairs
+        # of the form removed→added, building a JSON array of updates that
+        # mirrors digestabot's output schema:
+        #   [{file, image, digest, updated_digest}, ...]
+        files_json=$(gh api "repos/${{ github.repository }}/pulls/${PR_NUMBER}/files" --paginate)
+
+        updates='[]'
+        while read -r file_entry; do
+          filename=$(jq -r '.filename' <<<"$file_entry")
+          patch=$(jq -r '.patch // ""' <<<"$file_entry")
+          [ -z "$patch" ] && continue
+
+          # Pull all "-" and "+" lines that contain @sha256: digests, in order.
+          mapfile -t removed < <(grep -E '^-[^-].*@sha256:[a-f0-9]+' <<<"$patch" | grep -oE '[a-z0-9][a-z0-9._/:-]*@sha256:[a-f0-9]+' || true)
+          mapfile -t added   < <(grep -E '^\+[^+].*@sha256:[a-f0-9]+' <<<"$patch" | grep -oE '[a-z0-9][a-z0-9._/:-]*@sha256:[a-f0-9]+' || true)
+
+          # Pair removed/added by image:tag (everything before the @).
+          for old_ref in "${removed[@]}"; do
+            old_image="${old_ref%@*}"
+            old_digest="${old_ref##*@}"
+            for new_ref in "${added[@]}"; do
+              new_image="${new_ref%@*}"
+              new_digest="${new_ref##*@}"
+              if [ "$old_image" = "$new_image" ] && [ "$old_digest" != "$new_digest" ]; then
+                updates=$(jq -c \
+                  --arg file "$filename" \
+                  --arg image "$old_image" \
+                  --arg digest "$old_digest" \
+                  --arg updated_digest "$new_digest" \
+                  '. += [{file: $file, image: $image, digest: $digest, updated_digest: $updated_digest}]' \
+                  <<<"$updates")
+                break
+              fi
+            done
+          done
+        done < <(jq -c '.[]' <<<"$files_json")
+
+        count=$(jq 'length' <<<"$updates")
+        echo "Found $count digest updates"
+        echo "count=$count" >> "$GITHUB_OUTPUT"
+        echo "json=$(jq -c '{updates: .}' <<<"$updates")" >> "$GITHUB_OUTPUT"
+
+    - name: Compute chainctl image diff and update PR body
+      if: steps.check-config.outputs.skip == 'false' && steps.parse.outputs.count != '0'
       shell: bash
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PR_NUMBER: ${{ steps.digestabot.outputs.pull_request_number }}
-        DIGESTABOT_JSON: ${{ steps.digestabot.outputs.json }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        UPDATES_JSON: ${{ steps.parse.outputs.json }}
       run: |
         body_file=$(mktemp)
-        echo "Results of \`chainctl images diff\` for each image." >> "${body_file}"
-        echo "" >> "${body_file}"
+        # Preserve the original Dependabot PR body and append below a separator.
+        gh pr view "${PR_NUMBER}" --repo "${{ github.repository }}" --json body --jq .body > "${body_file}"
+        {
+          echo ""
+          echo "---"
+          echo ""
+          echo "## chainctl images diff"
+          echo ""
+        } >> "${body_file}"
 
         processed_images='[]'
 
@@ -98,7 +159,7 @@ jobs:
             echo "chainctl diff failed: ${err}"
             image_name=$(jq -r '.image' <<<"$item")
             {
-              echo "## ${image_name}"
+              echo "### ${image_name}"
               echo ""
               echo "|      | Digest |"
               echo "| ---- | ------ |"
@@ -139,8 +200,7 @@ jobs:
 
           image_name=$(jq -r '.image' <<<"$item")
 
-          # Image header + digest table
-          echo "## ${image_name}" >> "${body_file}"
+          echo "### ${image_name}" >> "${body_file}"
           echo "" >> "${body_file}"
           echo "|      | Digest |" >> "${body_file}"
           echo "| ---- | ------ |" >> "${body_file}"
@@ -150,8 +210,7 @@ jobs:
           echo "<details>" >> "${body_file}"
           echo "" >> "${body_file}"
 
-          # Vulnerabilities Added
-          echo "### Vulnerabilities Added" >> "${body_file}"
+          echo "#### Vulnerabilities Added" >> "${body_file}"
           vuln_added=$(jq -r '.vulnerabilities.added // []' <<<"${diff}")
           if [[ $(echo "${vuln_added}" | jq 'length') -gt 0 ]]; then
             echo "| Id | Severity |" >> "${body_file}"
@@ -162,8 +221,7 @@ jobs:
           fi
           echo "" >> "${body_file}"
 
-          # Vulnerabilities Removed
-          echo "### Vulnerabilities Removed" >> "${body_file}"
+          echo "#### Vulnerabilities Removed" >> "${body_file}"
           vuln_removed=$(jq -r '.vulnerabilities.removed // []' <<<"${diff}")
           if [[ $(echo "${vuln_removed}" | jq 'length') -gt 0 ]]; then
             echo "| Id | Severity |" >> "${body_file}"
@@ -174,8 +232,7 @@ jobs:
           fi
           echo "" >> "${body_file}"
 
-          # Packages Added
-          echo "### Packages Added" >> "${body_file}"
+          echo "#### Packages Added" >> "${body_file}"
           pkgs_added=$(jq '.packages.added // [] | map(select(.reference | startswith("pkg:apk/")))' <<<"${diff}")
           if [[ $(echo "${pkgs_added}" | jq 'length') -gt 0 ]]; then
             echo "| Name | Version | Reference |" >> "${body_file}"
@@ -186,8 +243,7 @@ jobs:
           fi
           echo "" >> "${body_file}"
 
-          # Packages Removed
-          echo "### Packages Removed" >> "${body_file}"
+          echo "#### Packages Removed" >> "${body_file}"
           pkgs_removed=$(jq '.packages.removed // [] | map(select(.reference | startswith("pkg:apk/")))' <<<"${diff}")
           if [[ $(echo "${pkgs_removed}" | jq 'length') -gt 0 ]]; then
             echo "| Name | Version | Reference |" >> "${body_file}"
@@ -198,8 +254,7 @@ jobs:
           fi
           echo "" >> "${body_file}"
 
-          # Packages Changed
-          echo "### Packages Changed" >> "${body_file}"
+          echo "#### Packages Changed" >> "${body_file}"
           pkgs_changed=$(jq '.packages.changed // [] | map(select(.current.reference | startswith("pkg:apk/")))' <<<"${diff}")
           if [[ $(echo "${pkgs_changed}" | jq 'length') -gt 0 ]]; then
             echo "| Name | Previous Version | Current Version |" >> "${body_file}"
@@ -213,10 +268,9 @@ jobs:
           echo "</details>" >> "${body_file}"
           echo "" >> "${body_file}"
 
-        done < <(jq -c '.updates // [] | .[]' <<<"${DIGESTABOT_JSON}")
+        done < <(jq -c '.updates // [] | .[]' <<<"${UPDATES_JSON}")
 
-        # GitHub PR bodies are capped at 65,536 characters. Truncate with a
-        # visible notice if we go over so `gh pr edit` doesn't fail outright.
+        # GitHub PR bodies are capped at 65,536 characters.
         max_body_bytes=65000
         if [[ $(wc -c < "${body_file}") -gt ${max_body_bytes} ]]; then
           truncated_file=$(mktemp)

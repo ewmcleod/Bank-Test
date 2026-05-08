@@ -3,18 +3,23 @@ name: Image digest update
 on:
   workflow_dispatch:
   schedule:
-    # At the end of every day
+    # Every day at 00:00 UTC
     - cron: "0 0 * * *"
+
+concurrency:
+  group: digestabot
+  cancel-in-progress: false
 
 jobs:
   image-update:
     name: Image digest update
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     permissions:
       contents: write # to push the updates
       pull-requests: write # to open Pull requests
-      id-token: write # used to sign the commits using gitsign
+      id-token: write # OIDC token for setup-chainctl assumable-identity exchange
 
     steps:
     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -42,11 +47,187 @@ jobs:
       uses: chainguard-dev/digestabot@afe360aa3b0c29d88844138e8fa0349384398967 # v1.3.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        signoff: true # optional
-        author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com> # optional
-        committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com> # optional
-        labels-for-pr: automated pr, kind/cleanup, release-note-none # optional
-        branch-for-pr: update-digests # optional
-        title-for-pr: Update images digests # optional
-        description-for-pr: Update images digests # optional
-        commit-message: Update images digests # optional
+
+    # grype is required by chainctl images diff for vulnerability scanning.
+    # Pinned to a specific release with sha256 verification.
+    - name: Install grype
+      if: ${{ steps.digestabot.outputs.pull_request_number != '' }}
+      env:
+        GRYPE_VERSION: v0.112.0
+        GRYPE_SHA256: acb14a030010fe9bdb9594b4ae108d9d14ef2f926d936aa0916dc62c89c058ea
+      run: |
+        cd "$RUNNER_TEMP"
+        curl -sSfL -o grype.tar.gz \
+          "https://github.com/anchore/grype/releases/download/${GRYPE_VERSION}/grype_${GRYPE_VERSION#v}_linux_amd64.tar.gz"
+        echo "${GRYPE_SHA256}  grype.tar.gz" | sha256sum --check
+        tar -xzf grype.tar.gz -C /usr/local/bin grype
+
+    # Compute chainctl images diff and update the PR body to match the format
+    # at https://github.com/chainguard-demo/digestabot-examples/pull/2
+    # Requires chainctl authenticated (setup-chainctl above) and grype in PATH.
+    - name: Compute chainctl image diff
+      if: ${{ steps.digestabot.outputs.pull_request_number != '' }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ steps.digestabot.outputs.pull_request_number }}
+        DIGESTABOT_JSON: ${{ steps.digestabot.outputs.json }}
+      run: |
+        body_file=$(mktemp)
+        echo "Results of \`chainctl images diff\` for each image." >> "${body_file}"
+        echo "" >> "${body_file}"
+
+        processed_images='[]'
+
+        while read -r item; do
+          image=$(jq -r '.image + "@" + .updated_digest' <<<"$item")
+          old_image=$(jq -r '.image + "@" + .digest' <<<"$item")
+          old_digest=$(jq -r '.digest' <<<"$item")
+          new_digest=$(jq -r '.updated_digest' <<<"$item")
+
+          # Deduplicate
+          image_pair_hash=$(sha256sum <<<"${image}${old_image}" | awk '{print $1}')
+          if [[ $(jq -e ".[] | select(. == \"${image_pair_hash}\")" <<<"${processed_images}") ]]; then
+            continue
+          fi
+          processed_images=$(jq -c ". += [\"${image_pair_hash}\"]" <<<"${processed_images}")
+
+          echo "Computing diff for ${image}"
+          if ! diff=$(chainctl images diff "${old_image}" "${image}" -o json 2>/tmp/chainctl-diff.log); then
+            err=$(cat /tmp/chainctl-diff.log)
+            echo "chainctl diff failed: ${err}"
+            image_name=$(jq -r '.image' <<<"$item")
+            {
+              echo "## ${image_name}"
+              echo ""
+              echo "|      | Digest |"
+              echo "| ---- | ------ |"
+              echo "| From | \`${old_digest}\` |"
+              echo "| To   | \`${new_digest}\` |"
+              echo ""
+              echo "> :warning: \`chainctl images diff\` failed for this image."
+              echo ""
+              echo "<details><summary>Error</summary>"
+              echo ""
+              echo '```'
+              echo "${err}"
+              echo '```'
+              echo ""
+              echo "</details>"
+              echo ""
+            } >> "${body_file}"
+            continue
+          fi
+
+          # chainctl images diff JSON structure:
+          #   .vulnerabilities.{removed,added}[] => {cve, severity}
+          #   .packages.{added,removed}[]        => {name, version, reference}
+          #   .packages.changed[]                => {name, current.{version,reference}, previous.version}
+          # Filter to pkg:apk/ refs to avoid duplicate CPE entries.
+          total_changes=$(jq '
+            (.vulnerabilities.removed // [] | length) +
+            (.vulnerabilities.added // [] | length) +
+            (.packages.changed // [] | map(select(.current.reference | startswith("pkg:apk/"))) | length) +
+            (.packages.added // [] | map(select(.reference | startswith("pkg:apk/"))) | length) +
+            (.packages.removed // [] | map(select(.reference | startswith("pkg:apk/"))) | length)
+          ' <<<"${diff}")
+
+          if [[ ${total_changes} -lt 1 ]]; then
+            echo "No changes for ${image}, skipping"
+            continue
+          fi
+
+          image_name=$(jq -r '.image' <<<"$item")
+
+          # Image header + digest table
+          echo "## ${image_name}" >> "${body_file}"
+          echo "" >> "${body_file}"
+          echo "|      | Digest |" >> "${body_file}"
+          echo "| ---- | ------ |" >> "${body_file}"
+          echo "| From | \`${old_digest}\` |" >> "${body_file}"
+          echo "| To   | \`${new_digest}\` |" >> "${body_file}"
+          echo "" >> "${body_file}"
+          echo "<details>" >> "${body_file}"
+          echo "" >> "${body_file}"
+
+          # Vulnerabilities Added
+          echo "### Vulnerabilities Added" >> "${body_file}"
+          vuln_added=$(jq -r '.vulnerabilities.added // []' <<<"${diff}")
+          if [[ $(echo "${vuln_added}" | jq 'length') -gt 0 ]]; then
+            echo "| Id | Severity |" >> "${body_file}"
+            echo "| -- | -------- |" >> "${body_file}"
+            echo "${vuln_added}" | jq -r '.[] | "| \(.cve) | \(.severity) |"' >> "${body_file}"
+          else
+            echo "None" >> "${body_file}"
+          fi
+          echo "" >> "${body_file}"
+
+          # Vulnerabilities Removed
+          echo "### Vulnerabilities Removed" >> "${body_file}"
+          vuln_removed=$(jq -r '.vulnerabilities.removed // []' <<<"${diff}")
+          if [[ $(echo "${vuln_removed}" | jq 'length') -gt 0 ]]; then
+            echo "| Id | Severity |" >> "${body_file}"
+            echo "| -- | -------- |" >> "${body_file}"
+            echo "${vuln_removed}" | jq -r '.[] | "| \(.cve) | \(.severity) |"' >> "${body_file}"
+          else
+            echo "None" >> "${body_file}"
+          fi
+          echo "" >> "${body_file}"
+
+          # Packages Added
+          echo "### Packages Added" >> "${body_file}"
+          pkgs_added=$(jq '.packages.added // [] | map(select(.reference | startswith("pkg:apk/")))' <<<"${diff}")
+          if [[ $(echo "${pkgs_added}" | jq 'length') -gt 0 ]]; then
+            echo "| Name | Version | Reference |" >> "${body_file}"
+            echo "| ---- | ------- | --------- |" >> "${body_file}"
+            echo "${pkgs_added}" | jq -r '.[] | "| \(.name) | \(.version) | \(.reference) |"' >> "${body_file}"
+          else
+            echo "None" >> "${body_file}"
+          fi
+          echo "" >> "${body_file}"
+
+          # Packages Removed
+          echo "### Packages Removed" >> "${body_file}"
+          pkgs_removed=$(jq '.packages.removed // [] | map(select(.reference | startswith("pkg:apk/")))' <<<"${diff}")
+          if [[ $(echo "${pkgs_removed}" | jq 'length') -gt 0 ]]; then
+            echo "| Name | Version | Reference |" >> "${body_file}"
+            echo "| ---- | ------- | --------- |" >> "${body_file}"
+            echo "${pkgs_removed}" | jq -r '.[] | "| \(.name) | \(.version) | \(.reference) |"' >> "${body_file}"
+          else
+            echo "None" >> "${body_file}"
+          fi
+          echo "" >> "${body_file}"
+
+          # Packages Changed
+          echo "### Packages Changed" >> "${body_file}"
+          pkgs_changed=$(jq '.packages.changed // [] | map(select(.current.reference | startswith("pkg:apk/")))' <<<"${diff}")
+          if [[ $(echo "${pkgs_changed}" | jq 'length') -gt 0 ]]; then
+            echo "| Name | Previous Version | Current Version |" >> "${body_file}"
+            echo "| ---- | ---------------- | --------------- |" >> "${body_file}"
+            echo "${pkgs_changed}" | jq -r '.[] | "| \(.name) | \(.previous.version) | \(.current.version) |"' >> "${body_file}"
+          else
+            echo "None" >> "${body_file}"
+          fi
+          echo "" >> "${body_file}"
+
+          echo "</details>" >> "${body_file}"
+          echo "" >> "${body_file}"
+
+        done < <(jq -c '.updates // [] | .[]' <<<"${DIGESTABOT_JSON}")
+
+        # GitHub PR bodies are capped at 65,536 characters. Truncate with a
+        # visible notice if we go over so `gh pr edit` doesn't fail outright.
+        max_body_bytes=65000
+        if [[ $(wc -c < "${body_file}") -gt ${max_body_bytes} ]]; then
+          truncated_file=$(mktemp)
+          head -c ${max_body_bytes} "${body_file}" > "${truncated_file}"
+          {
+            echo ""
+            echo "---"
+            echo ""
+            echo "> :warning: PR body truncated to fit the 65,536 character limit. See workflow logs for the full diff."
+          } >> "${truncated_file}"
+          body_file="${truncated_file}"
+        fi
+
+        gh pr edit "${PR_NUMBER}" --body-file "${body_file}" --repo "${{ github.repository }}"

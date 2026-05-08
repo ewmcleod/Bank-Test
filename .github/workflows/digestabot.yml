@@ -19,6 +19,7 @@ jobs:
     permissions:
       contents: write # to push the updates
       pull-requests: write # to open Pull requests
+      id-token: write # OIDC token for setup-chainctl assumable-identity exchange
 
     steps:
     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4

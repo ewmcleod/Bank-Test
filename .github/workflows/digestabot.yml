@@ -17,9 +17,29 @@ jobs:
       id-token: write # used to sign the commits using gitsign
 
     steps:
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
-    - uses: chainguard-dev/digestabot@43222237fd8a07dc41a06ca13e931c95ce2cedac # v1.2.2
+    # Authenticate with Chainguard so digestabot can pull the private org image
+    # to resolve the latest digest. Skip gracefully if identity not configured.
+    - name: Check required configuration
+      id: check-config
+      run: |
+        if [ -z "${{ vars.CHAINGUARD_IDENTITY }}" ]; then
+          echo "CHAINGUARD_IDENTITY not configured — skipping Chainguard auth."
+          echo "skip=true" >> $GITHUB_OUTPUT
+        else
+          echo "skip=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Setup chainctl
+      if: steps.check-config.outputs.skip == 'false'
+      uses: chainguard-dev/setup-chainctl@f52718d822dc73d21a04ef2082822c4a203163b3 # v0.2.2
+      with:
+        identity: ${{ vars.CHAINGUARD_IDENTITY }}
+
+    - name: Run digestabot
+      id: digestabot
+      uses: chainguard-dev/digestabot@afe360aa3b0c29d88844138e8fa0349384398967 # v1.3.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         signoff: true # optional

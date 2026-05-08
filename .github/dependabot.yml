@@ -10,7 +10,7 @@ registries:
   cgr-trineta:
     type: docker-registry
     url: cgr.dev
-    username: _token
+    username: ${{ secrets.CHAINGUARD_USERNAME }}
     password: ${{ secrets.CHAINGUARD_PULL_TOKEN }}
 
 updates:

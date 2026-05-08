@@ -120,7 +120,7 @@ jobs:
           fi
 
           # chainctl images diff JSON structure:
-          #   .vulnerabilities.{removed,added}[] => {cve, severity}
+          #   .vulnerabilities.{removed,added}[] => {id, severity}
           #   .packages.{added,removed}[]        => {name, version, reference}
           #   .packages.changed[]                => {name, current.{version,reference}, previous.version}
           # Filter to pkg:apk/ refs to avoid duplicate CPE entries.
@@ -156,7 +156,7 @@ jobs:
           if [[ $(echo "${vuln_added}" | jq 'length') -gt 0 ]]; then
             echo "| Id | Severity |" >> "${body_file}"
             echo "| -- | -------- |" >> "${body_file}"
-            echo "${vuln_added}" | jq -r '.[] | "| \(.cve) | \(.severity) |"' >> "${body_file}"
+            echo "${vuln_added}" | jq -r '.[] | "| \(.id) | \(.severity) |"' >> "${body_file}"
           else
             echo "None" >> "${body_file}"
           fi
@@ -168,7 +168,7 @@ jobs:
           if [[ $(echo "${vuln_removed}" | jq 'length') -gt 0 ]]; then
             echo "| Id | Severity |" >> "${body_file}"
             echo "| -- | -------- |" >> "${body_file}"
-            echo "${vuln_removed}" | jq -r '.[] | "| \(.cve) | \(.severity) |"' >> "${body_file}"
+            echo "${vuln_removed}" | jq -r '.[] | "| \(.id) | \(.severity) |"' >> "${body_file}"
           else
             echo "None" >> "${body_file}"
           fi

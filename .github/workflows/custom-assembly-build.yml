@@ -8,6 +8,8 @@ name: Custom Assembly Build
 on:
   push:
     paths:
+      # WARNING: keep in sync with env.IMAGES_DIR below — `on:` can't reference
+      # env, so update both by hand or image changes will stop triggering.
       - ca-images-iac/**
       # WARNING: keep in sync with env.CERTS_DIR below. GitHub evaluates `on:`
       # before any env exists, so this literal can't reference it — they must be
@@ -20,6 +22,13 @@ on:
 permissions: {}
 
 env:
+  # Root directory holding one subdirectory per image (<IMAGES_DIR>/<repo>/),
+  # each containing a <repo>.yaml Custom Assembly config. Scanned to build the
+  # job matrix.
+  # WARNING: keep in sync with the `ca-images-iac/**` path filter in
+  # on.push.paths above by hand — `on:` can't reference this value.
+  IMAGES_DIR: ca-images-iac
+
   # Global CA certificate directory — scanned for every image build. These are
   # the org's internal/private CAs, applied uniformly, not a per-image setting.
   # WARNING: keep in sync with the `certs/**` path filter in on.push.paths above
@@ -43,7 +52,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Build matrix from ca-images-iac/
+      - name: Build matrix from image directories
         id: set
         run: |
           set -euo pipefail
@@ -61,7 +70,7 @@ jobs:
 
           # repo = directory name, config = <repo>.yaml inside it.
           entries=()
-          for dir in ca-images-iac/*/; do
+          for dir in "$IMAGES_DIR"/*/; do
             repo=$(basename "$dir")
             config="${dir}${repo}.yaml"
             if [ ! -f "$config" ]; then echo "::warning::$dir has no ${repo}.yaml — skipping."; continue; fi
@@ -69,7 +78,7 @@ jobs:
           done
 
           if [ ${#entries[@]} -eq 0 ]; then
-            echo "No valid image directories under ca-images-iac/ — nothing to build."
+            echo "No valid image directories under $IMAGES_DIR/ — nothing to build."
             echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -141,9 +150,13 @@ jobs:
           echo "Found $CERT_COUNT additional CA certificate(s)."
 
           # Snapshot existing report IDs so the wait step can identify this apply's build(s).
+          # A brand-new repo has no build history yet — `build list` exits non-zero,
+          # which under `set -e`/`pipefail` would abort before the apply that creates
+          # it. Tolerate that by defaulting to an empty array.
           BEFORE_IDS=$(chainctl images repos build list \
             --parent "$CHAINGUARD_ORG" --repo "$CHAINGUARD_REPO" \
-            --output json 2>/dev/null | jq -c '[.reports[].id]')
+            --output json 2>/dev/null | jq -c '[.reports[].id]' || echo '[]')
+          BEFORE_IDS=${BEFORE_IDS:-[]}
           echo "before_ids=$BEFORE_IDS" >> "$GITHUB_OUTPUT"
 
           set +e

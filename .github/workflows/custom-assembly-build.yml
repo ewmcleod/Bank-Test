@@ -1,0 +1,222 @@
+name: Custom Assembly Build
+
+# Build-only Custom Assembly pipeline: applies each image's config (with CA
+# certificate injection) and waits for the build to finish. No image signature
+# verification, SBOM/SLSA extraction, or Dockerfile digest pinning — see
+# platform-build.yml for the full build + provenance + pin pipeline.
+
+on:
+  push:
+    paths:
+      # WARNING: keep in sync with env.IMAGES_DIR below — `on:` can't reference
+      # env, so update both by hand or image changes will stop triggering.
+      - ca-images-iac/**
+      # WARNING: keep in sync with env.CERTS_DIR below. GitHub evaluates `on:`
+      # before any env exists, so this literal can't reference it — they must be
+      # updated together by hand or cert changes will silently stop triggering.
+      - certs/**
+      - .github/workflows/custom-assembly-build.yml
+  workflow_dispatch:
+
+# Least privilege at the top; each job widens only what it needs.
+permissions: {}
+
+env:
+  # Root directory holding one subdirectory per image (<IMAGES_DIR>/<repo>/),
+  # each containing a <repo>.yaml Custom Assembly config. Scanned to build the
+  # job matrix.
+  # WARNING: keep in sync with the `ca-images-iac/**` path filter in
+  # on.push.paths above by hand — `on:` can't reference this value.
+  IMAGES_DIR: ca-images-iac
+
+  # Global CA certificate directory — scanned for every image build. These are
+  # the org's internal/private CAs, applied uniformly, not a per-image setting.
+  # WARNING: keep in sync with the `certs/**` path filter in on.push.paths above
+  # by hand — `on:` can't reference this value, so they won't update together.
+  CERTS_DIR: certs
+
+jobs:
+  # ── Discover — one matrix entry per image directory ──
+  # Each image is a directory: ca-images-iac/<repo>/ containing a <repo>.yaml
+  # Custom Assembly config. Every image with a config is built (config-driven —
+  # no meta.yaml needed since this workflow never pins a Dockerfile). If the org
+  # isn't configured or no images exist, the matrix is empty and build is skipped.
+  discover:
+    name: Discover images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Build matrix from image directories
+        id: set
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+
+          # Guard — skip gracefully if Chainguard org is not configured.
+          # Set CHAINGUARD_ORG and CHAINGUARD_IDENTITY in repo Settings → Variables
+          # and configure an assumable OIDC identity in your Chainguard organization.
+          if [ -z "${{ vars.CHAINGUARD_ORG }}" ] || [ -z "${{ vars.CHAINGUARD_IDENTITY }}" ]; then
+            echo "CHAINGUARD_ORG or CHAINGUARD_IDENTITY not configured — skipping build."
+            echo "See: https://edu.chainguard.dev/chainguard/administration/iam-organizations/assumable-ids/identity-examples/github-actions-identity/"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # repo = directory name, config = <repo>.yaml inside it.
+          entries=()
+          for dir in "$IMAGES_DIR"/*/; do
+            repo=$(basename "$dir")
+            config="${dir}${repo}.yaml"
+            if [ ! -f "$config" ]; then echo "::warning::$dir has no ${repo}.yaml — skipping."; continue; fi
+            entries+=( "$(jq -nc --arg repo "$repo" --arg config "$config" '{repo: $repo, config: $config}')" )
+          done
+
+          if [ ${#entries[@]} -eq 0 ]; then
+            echo "No valid image directories under $IMAGES_DIR/ — nothing to build."
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          INCLUDE=$(printf '%s\n' "${entries[@]}" | jq -s -c '{include: .}')
+          echo "Discovered images:"
+          echo "$INCLUDE" | jq -r '.include[] | "  - \(.repo)  (\(.config))"'
+          echo "matrix=$INCLUDE" >> "$GITHUB_OUTPUT"
+
+  # ── Build — one isolated job per image (fail-fast: false) ──
+  # Apply each image's config (+ certificates) and wait for the async build to
+  # finish. A slow or failing image only fails its own job, not the others.
+  build:
+    name: Build ${{ matrix.repo }}
+    needs: discover
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write     # OIDC auth with chainctl
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.discover.outputs.matrix) }}
+
+    env:
+      CHAINGUARD_ORG: ${{ vars.CHAINGUARD_ORG || 'trineta.net' }}
+      CHAINGUARD_REPO: ${{ matrix.repo }}
+      CONFIG_FILE: ${{ matrix.config }}        # pure Custom Assembly config
+      # CERTS_DIR is global (workflow-level env), not per-image.
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup chainctl
+        uses: chainguard-dev/setup-chainctl@2cddd35a2f120d9973e58094dc6878c93cf58c28 # v0.5.1
+        with:
+          identity: ${{ vars.CHAINGUARD_IDENTITY }}
+
+      # Build the invocation dynamically: start from the image's Custom Assembly
+      # config and append one `--with-certificates=<file>` flag per CA certificate
+      # found under $CERTS_DIR. `build apply` is async and returns no digest, so
+      # we snapshot existing build report IDs to identify the build(s) it triggers.
+      - name: Apply config + certificates
+        id: customize
+        run: |
+          set -euo pipefail
+
+          ARGS=(
+            images repos build apply
+            --parent "$CHAINGUARD_ORG"
+            --repo   "$CHAINGUARD_REPO"
+            --file   "$CONFIG_FILE"
+            --yes
+          )
+
+          # Discover additional CA certificates and add a flag for each.
+          CERT_COUNT=0
+          if [ -n "$CERTS_DIR" ] && [ -d "$CERTS_DIR" ]; then
+            while IFS= read -r -d '' cert; do
+              echo "Adding CA certificate: $cert"
+              ARGS+=( "--with-certificates=$cert" )
+              CERT_COUNT=$((CERT_COUNT + 1))
+            done < <(find "$CERTS_DIR" -type f \
+                        \( -iname '*.pem' -o -iname '*.crt' -o -iname '*.cer' -o -iname '*.ca' \) \
+                        -print0 | sort -z)
+          else
+            echo "No certificate directory '${CERTS_DIR:-<none>}' — building without extra CAs."
+          fi
+          echo "Found $CERT_COUNT additional CA certificate(s)."
+
+          # Snapshot existing report IDs so the wait step can identify this apply's build(s).
+          # A brand-new repo has no build history yet — `build list` exits non-zero,
+          # which under `set -e`/`pipefail` would abort before the apply that creates
+          # it. Tolerate that by defaulting to an empty array.
+          BEFORE_IDS=$(chainctl images repos build list \
+            --parent "$CHAINGUARD_ORG" --repo "$CHAINGUARD_REPO" \
+            --output json 2>/dev/null | jq -c '[.reports[].id]' || echo '[]')
+          BEFORE_IDS=${BEFORE_IDS:-[]}
+          echo "before_ids=$BEFORE_IDS" >> "$GITHUB_OUTPUT"
+
+          set +e
+          APPLY_OUT=$(chainctl "${ARGS[@]}" 2>&1)
+          APPLY_RC=$?
+          set -e
+          echo "$APPLY_OUT"
+          if [ "$APPLY_RC" -ne 0 ]; then
+            echo "Error: chainctl build apply exited with code $APPLY_RC." >&2
+            exit "$APPLY_RC"
+          fi
+
+          if echo "$APPLY_OUT" | grep -q "No changes detected"; then
+            echo "Image already up to date — no new build triggered."
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skipped=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Wait for the triggered build(s) to finish and fail if any did not
+      # succeed. Identifies them as report IDs absent before the apply, so
+      # concurrent/historical builds don't confuse completion detection.
+      - name: Wait for build to complete
+        if: steps.customize.outputs.skipped != 'true'
+        run: |
+          set -euo pipefail
+          BEFORE_IDS='${{ steps.customize.outputs.before_ids }}'
+
+          list_reports() {
+            chainctl images repos build list \
+              --parent "$CHAINGUARD_ORG" --repo "$CHAINGUARD_REPO" \
+              --output json 2>/dev/null
+          }
+
+          echo "Waiting for custom build(s) of '$CHAINGUARD_REPO' to complete..."
+          DEADLINE=$(( $(date +%s) + 600 ))   # 10 minute budget
+          while :; do
+            NEW=$(list_reports | jq -c --argjson before "$BEFORE_IDS" \
+                    '[.reports[] | select((.id as $i | $before | index($i)) | not)]')
+            TOTAL=$(echo "$NEW"   | jq 'length')
+            PENDING=$(echo "$NEW" | jq '[.[] | select(.result == null)] | length')
+            echo "  triggered reports: total=$TOTAL pending=$PENDING"
+
+            if [ "$TOTAL" -gt 0 ] && [ "$PENDING" -eq 0 ]; then
+              break
+            fi
+            if [ "$(date +%s)" -ge "$DEADLINE" ]; then
+              echo "Error: timed out after 10m waiting for build(s)." >&2
+              echo "$NEW" | jq -r '.[] | "  \(.startedAt) \((.config|fromjson).annotations["dev.chainguard.package.main"]) \(.result // "pending")"' >&2
+              exit 1
+            fi
+            sleep 20
+          done
+
+          FAILED=$(echo "$NEW" | jq -c '[.[] | select(.result != "Success")]')
+          if [ "$(echo "$FAILED" | jq 'length')" -ne 0 ]; then
+            echo "Error: one or more triggered builds of '$CHAINGUARD_REPO' did not succeed:" >&2
+            echo "$FAILED" | jq -r '.[] | "  \(.startedAt) \((.config|fromjson).annotations["dev.chainguard.package.main"]) \(.result)"' >&2
+            echo "Log of most recent failed attempt:" >&2
+            echo "$FAILED" | jq -r 'sort_by(.completedAt) | last | .log' | tail -c 3000 >&2
+            exit 1
+          fi
+          echo "All triggered builds of '$CHAINGUARD_REPO' completed successfully."

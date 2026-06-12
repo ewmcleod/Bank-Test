@@ -7,15 +7,11 @@ name: Custom Assembly Build
 
 on:
   push:
+    # Images live in top-level dirs scanned from the repo root (IMAGES_DIR: .),
+    # so there's no subpath to scope to — trigger on any push. Discovery filters
+    # to dirs containing a matching <repo>.yaml, so non-image dirs are skipped.
     paths:
-      # WARNING: keep in sync with env.IMAGES_DIR below — `on:` can't reference
-      # env, so update both by hand or image changes will stop triggering.
-      - ca-images-iac/**
-      # WARNING: keep in sync with env.CERTS_DIR below. GitHub evaluates `on:`
-      # before any env exists, so this literal can't reference it — they must be
-      # updated together by hand or cert changes will silently stop triggering.
-      - certs/**
-      - .github/workflows/custom-assembly-build.yml
+      - '**'
   workflow_dispatch:
 
 # Least privilege at the top; each job widens only what it needs.
@@ -24,15 +20,11 @@ permissions: {}
 env:
   # Root directory holding one subdirectory per image (<IMAGES_DIR>/<repo>/),
   # each containing a <repo>.yaml Custom Assembly config. Scanned to build the
-  # job matrix.
-  # WARNING: keep in sync with the `ca-images-iac/**` path filter in
-  # on.push.paths above by hand — `on:` can't reference this value.
-  IMAGES_DIR: ca-images-iac
+  # job matrix. '.' scans top-level dirs at the repo root.
+  IMAGES_DIR: .
 
   # Global CA certificate directory — scanned for every image build. These are
   # the org's internal/private CAs, applied uniformly, not a per-image setting.
-  # WARNING: keep in sync with the `certs/**` path filter in on.push.paths above
-  # by hand — `on:` can't reference this value, so they won't update together.
   CERTS_DIR: certs
 
 jobs:

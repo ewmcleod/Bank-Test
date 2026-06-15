@@ -7,11 +7,15 @@ name: Custom Assembly Build
 
 on:
   push:
-    # Images live in top-level dirs scanned from the repo root (IMAGES_DIR: .),
-    # so there's no subpath to scope to — trigger on any push. Discovery filters
-    # to dirs containing a matching <repo>.yaml, so non-image dirs are skipped.
     paths:
-      - '**'
+      # WARNING: keep in sync with env.IMAGES_DIR below — `on:` can't reference
+      # env, so update both by hand or image changes will stop triggering.
+      - ca-images-iac/**
+      # WARNING: keep in sync with env.CERTS_DIR below. GitHub evaluates `on:`
+      # before any env exists, so this literal can't reference it — they must be
+      # updated together by hand or cert changes will silently stop triggering.
+      - certs/**
+      - .github/workflows/custom-assembly-build.yml
   workflow_dispatch:
 
 # Least privilege at the top; each job widens only what it needs.
@@ -20,8 +24,10 @@ permissions: {}
 env:
   # Root directory holding one subdirectory per image (<IMAGES_DIR>/<repo>/),
   # each containing a <repo>.yaml Custom Assembly config. Scanned to build the
-  # job matrix. '.' scans top-level dirs at the repo root.
-  IMAGES_DIR: .
+  # job matrix.
+  # WARNING: keep in sync with the `ca-images-iac/**` path filter in
+  # on.push.paths above by hand — `on:` can't reference this value.
+  IMAGES_DIR: ca-images-iac
 
   # Global CA certificate directory — scanned for every image build. These are
   # the org's internal/private CAs, applied uniformly, not a per-image setting.
@@ -29,10 +35,12 @@ env:
 
 jobs:
   # ── Discover — one matrix entry per image directory ──
-  # Each image is a directory: ca-images-iac/<repo>/ containing a <repo>.yaml
-  # Custom Assembly config. Every image with a config is built (config-driven —
-  # no meta.yaml needed since this workflow never pins a Dockerfile). If the org
-  # isn't configured or no images exist, the matrix is empty and build is skipped.
+  # Each image is a directory: <base>/ containing a <base>.yaml Custom Assembly
+  # config, where <base> is the Chainguard image being customized. An optional
+  # <base>/meta.yaml may set `save-as: <name>` to build the result into a
+  # separate variant repo; without it the base is customized in place. Every
+  # directory with a config is built. If the org isn't configured or no images
+  # exist, the matrix is empty and build is skipped.
   discover:
     name: Discover images
     runs-on: ubuntu-latest
@@ -60,13 +68,25 @@ jobs:
             exit 0
           fi
 
-          # repo = directory name, config = <repo>.yaml inside it.
+          # base = directory name, config = <base>.yaml inside it. An optional
+          # meta.yaml may set `save-as: <name>` to build the result into a
+          # separate variant repo; without it, target == base (customize in place).
           entries=()
           for dir in "$IMAGES_DIR"/*/; do
-            repo=$(basename "$dir")
-            config="${dir}${repo}.yaml"
-            if [ ! -f "$config" ]; then echo "::warning::$dir has no ${repo}.yaml — skipping."; continue; fi
-            entries+=( "$(jq -nc --arg repo "$repo" --arg config "$config" '{repo: $repo, config: $config}')" )
+            base=$(basename "$dir")
+            config="${dir}${base}.yaml"
+            if [ ! -f "$config" ]; then echo "::warning::$dir has no ${base}.yaml — skipping."; continue; fi
+
+            target="$base"
+            meta="${dir}meta.yaml"
+            if [ -f "$meta" ]; then
+              save_as=$(yq '.["save-as"]' "$meta")   # prints "null" when key is absent
+              [ "$save_as" = "null" ] && save_as=""
+              [ -n "$save_as" ] && target="$save_as"
+            fi
+
+            entries+=( "$(jq -nc --arg base "$base" --arg target "$target" --arg config "$config" \
+                          '{base: $base, target: $target, config: $config}')" )
           done
 
           if [ ${#entries[@]} -eq 0 ]; then
@@ -77,14 +97,14 @@ jobs:
 
           INCLUDE=$(printf '%s\n' "${entries[@]}" | jq -s -c '{include: .}')
           echo "Discovered images:"
-          echo "$INCLUDE" | jq -r '.include[] | "  - \(.repo)  (\(.config))"'
+          echo "$INCLUDE" | jq -r '.include[] | "  - \(.target)  (base: \(.base), config: \(.config))"'
           echo "matrix=$INCLUDE" >> "$GITHUB_OUTPUT"
 
   # ── Build — one isolated job per image (fail-fast: false) ──
   # Apply each image's config (+ certificates) and wait for the async build to
   # finish. A slow or failing image only fails its own job, not the others.
   build:
-    name: Build ${{ matrix.repo }}
+    name: Build ${{ matrix.target }}
     needs: discover
     runs-on: ubuntu-latest
     permissions:
@@ -96,7 +116,8 @@ jobs:
 
     env:
       CHAINGUARD_ORG: ${{ vars.CHAINGUARD_ORG || 'trineta.net' }}
-      CHAINGUARD_REPO: ${{ matrix.repo }}
+      CHAINGUARD_BASE: ${{ matrix.base }}      # Chainguard image being customized
+      CHAINGUARD_REPO: ${{ matrix.target }}    # repo built & tracked (== base unless save-as)
       CONFIG_FILE: ${{ matrix.config }}        # pure Custom Assembly config
       # CERTS_DIR is global (workflow-level env), not per-image.
 
@@ -118,13 +139,24 @@ jobs:
         run: |
           set -euo pipefail
 
-          ARGS=(
-            images repos build apply
-            --parent "$CHAINGUARD_ORG"
-            --repo   "$CHAINGUARD_REPO"
-            --file   "$CONFIG_FILE"
-            --yes
-          )
+          # Pick the apply mode. `--save-as` CREATES a new variant repo and errors
+          # if it already exists, so it's used only for a variant's first build:
+          #   - no save-as (target == base): customize the base image in place
+          #   - save-as target exists:        update the variant in place
+          #   - save-as target missing:       create it from the base via --save-as
+          ARGS=( images repos build apply --parent "$CHAINGUARD_ORG" --file "$CONFIG_FILE" --yes )
+          if [ "$CHAINGUARD_REPO" = "$CHAINGUARD_BASE" ]; then
+            echo "Customizing base image '$CHAINGUARD_BASE' in place."
+            ARGS+=( --repo "$CHAINGUARD_BASE" )
+          elif chainctl images repos build list \
+                 --parent "$CHAINGUARD_ORG" --repo "$CHAINGUARD_REPO" \
+                 --output json >/dev/null 2>&1; then
+            echo "Updating existing variant '$CHAINGUARD_REPO'."
+            ARGS+=( --repo "$CHAINGUARD_REPO" )
+          else
+            echo "Creating variant '$CHAINGUARD_REPO' from base '$CHAINGUARD_BASE'."
+            ARGS+=( --repo "$CHAINGUARD_BASE" --save-as "$CHAINGUARD_REPO" )
+          fi
 
           # Discover additional CA certificates and add a flag for each.
           CERT_COUNT=0

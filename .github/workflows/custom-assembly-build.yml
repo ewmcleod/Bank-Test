@@ -35,12 +35,15 @@ env:
 
 jobs:
   # ── Discover — one matrix entry per image directory ──
-  # Each image is a directory: <base>/ containing a <base>.yaml Custom Assembly
-  # config, where <base> is the Chainguard image being customized. An optional
-  # <base>/meta.yaml may set `save-as: <name>` to build the result into a
-  # separate variant repo; without it the base is customized in place. Every
-  # directory with a config is built. If the org isn't configured or no images
-  # exist, the matrix is empty and build is skipped.
+  # Each image is a directory <name>/ containing a <name>.yaml Custom Assembly
+  # config. Routing is driven by an optional <name>/meta.yaml:
+  #   - with meta.yaml:    it MUST set both `source` (base image to customize)
+  #                        and `save-as` (variant repo to create). The build
+  #                        creates/updates the save-as variant from that source.
+  #   - without meta.yaml: the dir-named base is customized in place.
+  # An incomplete meta.yaml (missing either field) errors and skips that image.
+  # If the org isn't configured or no images exist, the matrix is empty and
+  # build is skipped.
   discover:
     name: Discover images
     runs-on: ubuntu-latest
@@ -68,21 +71,29 @@ jobs:
             exit 0
           fi
 
-          # base = directory name, config = <base>.yaml inside it. An optional
-          # meta.yaml may set `save-as: <name>` to build the result into a
-          # separate variant repo; without it, target == base (customize in place).
+          # config = <dir-name>.yaml inside each directory. Routing comes from an
+          # optional meta.yaml: when present it MUST declare BOTH `source` (the
+          # base image to customize) and `save-as` (the variant repo to create) —
+          # an incomplete meta.yaml is an error and the image is skipped. Without
+          # a meta.yaml, the dir-named base is customized in place (target == base).
           entries=()
           for dir in "$IMAGES_DIR"/*/; do
-            base=$(basename "$dir")
-            config="${dir}${base}.yaml"
-            if [ ! -f "$config" ]; then echo "::warning::$dir has no ${base}.yaml — skipping."; continue; fi
+            name=$(basename "$dir")
+            config="${dir}${name}.yaml"
+            if [ ! -f "$config" ]; then echo "::warning::$dir has no ${name}.yaml — skipping."; continue; fi
 
-            target="$base"
+            base="$name"
+            target="$name"
             meta="${dir}meta.yaml"
             if [ -f "$meta" ]; then
-              save_as=$(yq '.["save-as"]' "$meta")   # prints "null" when key is absent
-              [ "$save_as" = "null" ] && save_as=""
-              [ -n "$save_as" ] && target="$save_as"
+              src=$(yq     '.source'      "$meta"); [ "$src" = "null" ]     && src=""
+              save_as=$(yq '.["save-as"]' "$meta"); [ "$save_as" = "null" ] && save_as=""
+              if [ -z "$src" ] || [ -z "$save_as" ]; then
+                echo "::error::$meta must set both 'source' and 'save-as' — skipping $dir."
+                continue
+              fi
+              base="$src"
+              target="$save_as"
             fi
 
             entries+=( "$(jq -nc --arg base "$base" --arg target "$target" --arg config "$config" \

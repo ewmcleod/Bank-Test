@@ -209,17 +209,21 @@ jobs:
           set -euo pipefail
           BEFORE_IDS='${{ steps.customize.outputs.before_ids }}'
 
+          # Tolerate a transient/just-created repo: a save-as variant's first
+          # build isn't immediately listable, and `build list` exits non-zero
+          # until it is. Emit empty JSON instead of letting set -e/pipefail abort
+          # the step, so the loop keeps polling until the build report appears.
           list_reports() {
             chainctl images repos build list \
               --parent "$CHAINGUARD_ORG" --repo "$CHAINGUARD_REPO" \
-              --output json 2>/dev/null
+              --output json 2>/dev/null || echo '{"reports":[]}'
           }
 
           echo "Waiting for custom build(s) of '$CHAINGUARD_REPO' to complete..."
           DEADLINE=$(( $(date +%s) + 600 ))   # 10 minute budget
           while :; do
             NEW=$(list_reports | jq -c --argjson before "$BEFORE_IDS" \
-                    '[.reports[] | select((.id as $i | $before | index($i)) | not)]')
+                    '[(.reports // [])[] | select((.id as $i | $before | index($i)) | not)]')
             TOTAL=$(echo "$NEW"   | jq 'length')
             PENDING=$(echo "$NEW" | jq '[.[] | select(.result == null)] | length')
             echo "  triggered reports: total=$TOTAL pending=$PENDING"

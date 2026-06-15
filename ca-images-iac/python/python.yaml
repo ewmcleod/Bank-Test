@@ -2,8 +2,10 @@
 #
 # A pure apko overlay: only valid Custom Assembly keys belong here
 # (contents, environment, annotations, accounts, certificates). This file is
-# passed verbatim to `chainctl images repos build apply -f`. Build routing
-# (tag, Dockerfile to pin, cert dir) lives alongside it in meta.yaml.
+# passed verbatim to `chainctl images repos build apply -f`. An optional
+# meta.yaml alongside it sets `source` + `save-as` to build a renamed variant;
+# without one, this base image is customized in place. CA certificates are
+# injected globally by the workflow (from the certs/ directory), not from here.
 #
 # Schema reference:
 #   https://edu.chainguard.dev/chainguard/chainguard-images/features/ca-docs/custom-assembly-chainctl/

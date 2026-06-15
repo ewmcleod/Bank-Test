@@ -1,9 +1,7 @@
 name: Custom Assembly Build
 
 # Build-only Custom Assembly pipeline: applies each image's config (with CA
-# certificate injection) and waits for the build to finish. No image signature
-# verification, SBOM/SLSA extraction, or Dockerfile digest pinning — see
-# platform-build.yml for the full build + provenance + pin pipeline.
+# certificate injection) and waits for the build to finish.
 
 on:
   push:
@@ -22,8 +20,8 @@ on:
 permissions: {}
 
 env:
-  # Root directory holding one subdirectory per image (<IMAGES_DIR>/<repo>/),
-  # each containing a <repo>.yaml Custom Assembly config. Scanned to build the
+  # Root directory holding one subdirectory per image (<IMAGES_DIR>/<name>/),
+  # each containing a <name>.yaml Custom Assembly config. Scanned to build the
   # job matrix.
   # WARNING: keep in sync with the `ca-images-iac/**` path filter in
   # on.push.paths above by hand — `on:` can't reference this value.
@@ -35,15 +33,15 @@ env:
 
 jobs:
   # ── Discover — one matrix entry per image directory ──
-  # Each image is a directory <name>/ containing a <name>.yaml Custom Assembly
-  # config. Routing is driven by an optional <name>/meta.yaml:
-  #   - with meta.yaml:    it MUST set both `source` (base image to customize)
-  #                        and `save-as` (variant repo to create). The build
-  #                        creates/updates the save-as variant from that source.
-  #   - without meta.yaml: the dir-named base is customized in place.
-  # An incomplete meta.yaml (missing either field) errors and skips that image.
-  # If the org isn't configured or no images exist, the matrix is empty and
-  # build is skipped.
+  # Each image is a directory <name>/ containing a <name>.yaml (or .yml) Custom
+  # Assembly config. Routing is driven by an optional <name>/meta.yaml (or .yml):
+  #   - with meta:    it MUST set both `source` (base image to customize) and
+  #                   `save-as` (variant repo to create). The build creates or
+  #                   updates the save-as variant from that source.
+  #   - without meta: the dir-named base is customized in place.
+  # A meta missing either field — or a directory carrying both the .yaml and .yml
+  # of the same file — errors and skips that image. If the org isn't configured
+  # or no images exist, the matrix is empty and build is skipped.
   discover:
     name: Discover images
     runs-on: ubuntu-latest
@@ -71,21 +69,40 @@ jobs:
             exit 0
           fi
 
-          # config = <dir-name>.yaml inside each directory. Routing comes from an
-          # optional meta.yaml: when present it MUST declare BOTH `source` (the
-          # base image to customize) and `save-as` (the variant repo to create) —
-          # an incomplete meta.yaml is an error and the image is skipped. Without
-          # a meta.yaml, the dir-named base is customized in place (target == base).
+          # Resolve a <prefix>.yaml / <prefix>.yml pair to the one existing file.
+          # rc: 0 = exactly one (path on stdout), 1 = none, 2 = both (conflict).
+          resolve_yaml() {
+            local y="$1.yaml" m="$1.yml"
+            if [ -f "$y" ] && [ -f "$m" ]; then return 2; fi
+            if [ -f "$y" ]; then printf '%s' "$y"; return 0; fi
+            if [ -f "$m" ]; then printf '%s' "$m"; return 0; fi
+            return 1
+          }
+
+          # Each directory has a <dir-name>.yaml (or .yml) Custom Assembly config —
+          # exactly one; both extensions present is an error. Routing comes from an
+          # optional meta.yaml (or .yml): when present it MUST declare BOTH `source`
+          # (base image to customize) and `save-as` (variant repo to create). An
+          # incomplete or duplicated meta errors and skips the image. Without a meta
+          # file, the dir-named base is customized in place (target == base).
           entries=()
           for dir in "$IMAGES_DIR"/*/; do
             name=$(basename "$dir")
-            config="${dir}${name}.yaml"
-            if [ ! -f "$config" ]; then echo "::warning::$dir has no ${name}.yaml — skipping."; continue; fi
+
+            config=$(resolve_yaml "${dir}${name}") && rc=0 || rc=$?
+            if [ "$rc" -eq 2 ]; then
+              echo "::error::$dir has both ${name}.yaml and ${name}.yml — keep one. Skipping."; continue
+            elif [ "$rc" -ne 0 ]; then
+              echo "::warning::$dir has no ${name}.yaml or ${name}.yml — skipping."; continue
+            fi
 
             base="$name"
             target="$name"
-            meta="${dir}meta.yaml"
-            if [ -f "$meta" ]; then
+
+            meta=$(resolve_yaml "${dir}meta") && rc=0 || rc=$?
+            if [ "$rc" -eq 2 ]; then
+              echo "::error::$dir has both meta.yaml and meta.yml — keep one. Skipping."; continue
+            elif [ "$rc" -eq 0 ]; then
               src=$(yq     '.source'      "$meta"); [ "$src" = "null" ]     && src=""
               save_as=$(yq '.["save-as"]' "$meta"); [ "$save_as" = "null" ] && save_as=""
               if [ -z "$src" ] || [ -z "$save_as" ]; then
@@ -141,10 +158,11 @@ jobs:
         with:
           identity: ${{ vars.CHAINGUARD_IDENTITY }}
 
-      # Build the invocation dynamically: start from the image's Custom Assembly
-      # config and append one `--with-certificates=<file>` flag per CA certificate
-      # found under $CERTS_DIR. `build apply` is async and returns no digest, so
-      # we snapshot existing build report IDs to identify the build(s) it triggers.
+      # Build the chainctl invocation dynamically: pick the apply mode (customize
+      # in place / update variant / create variant via --save-as), then append one
+      # `--with-certificates=<file>` flag per CA certificate found under $CERTS_DIR.
+      # `build apply` is async and returns no digest, so we snapshot existing build
+      # report IDs to identify the build(s) it triggers.
       - name: Apply config + certificates
         id: customize
         run: |

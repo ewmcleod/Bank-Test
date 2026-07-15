@@ -17,3 +17,4 @@ contents:
   packages:
     - jq
     - curl
+    - go-1.24

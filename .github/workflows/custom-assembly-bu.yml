@@ -1,10 +1,9 @@
-name: Custom Assembly Build (bu variant)
+name: Custom Assembly Build
 
 # Build-only Custom Assembly pipeline: applies each image's config (with CA
 # certificate injection) and waits for the build to finish.
 #
-# Variant of custom-assembly-build.yml with no meta.yaml routing. Instead,
-# routing is driven by the REQUIRED repo Actions variable BU (a "business unit"
+# Routing is driven by the REQUIRED repo Actions variable BU (a "business unit"
 # tag) — the workflow fails if it is not set:
 #   - source (base image to customize) is always the directory name
 #   - target (variant repo built & tracked) is "<dir-name>-<BU>"

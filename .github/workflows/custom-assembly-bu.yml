@@ -1,4 +1,4 @@
-name: Custom Assembly Build
+name: Custom Assembly Build - BU
 
 # Build-only Custom Assembly pipeline: applies each image's config (with CA
 # certificate injection) and waits for the build to finish.

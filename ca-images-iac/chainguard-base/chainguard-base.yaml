@@ -1,0 +1,5 @@
+contents:
+  packages:
+    - jq
+annotations:
+  "com.acme.business-unit": "payments"

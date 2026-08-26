@@ -1,17 +1,17 @@
 version: 2
 
 # Dependabot needs static credentials for private registries (no OIDC).
-# CHAINGUARD_PULL_TOKEN must be a long-lived pull token, stored as a
-# Dependabot secret (Settings → Secrets and variables → Dependabot).
+# Use a Chainguard pull token ID + token value pair as Dependabot secrets
+# (Settings -> Secrets and variables -> Dependabot).
 #
 # Generate with:
 #   chainctl auth pull-token --library-name=trineta.net --ttl=8760h
 registries:
   cgr-trineta:
     type: docker-registry
-    url: cgr.dev
-    username: ${{ secrets.CHAINGUARD_USERNAME }}
-    password: ${{ secrets.CHAINGUARD_PULL_TOKEN }}
+    url: https://cgr.dev
+    username: ${{ secrets.CHAINGUARD_PULL_TOKEN_ID }}
+    password: ${{ secrets.CHAINGUARD_PULL_TOKEN_PASSWORD }}
 
 updates:
   - package-ecosystem: docker

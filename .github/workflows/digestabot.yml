@@ -47,6 +47,8 @@ jobs:
       uses: chainguard-dev/digestabot@afe360aa3b0c29d88844138e8fa0349384398967 # v1.3.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        # Avoid branch-name collisions with other automation updates.
+        branch-for-pr: digestabot/update-digests
 
     # grype is required by chainctl images diff for vulnerability scanning.
     # Pinned to a specific release with sha256 verification.

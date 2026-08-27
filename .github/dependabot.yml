@@ -29,4 +29,9 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+    pull-request-branch-name:
+      # Use a deterministic branch namespace for Dependabot PRs.
+      # Dependabot still appends ecosystem/dependency segments to keep refs unique.
+      prefix: dependabot/update-digests
+      separator: /
     open-pull-requests-limit: 5

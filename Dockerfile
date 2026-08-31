@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build the C++ application with Chainguard's GCC image.
-FROM cgr.dev/trineta.net/gcc-glibc:latest@sha256:c5b599c7a3168596e4ff81d64fc69ec87d39157f9425ef3734760d95f8dae1ab AS build
+FROM cgr.dev/trineta.net/gcc-glibc:latest@sha256:4709b233c336ddbf8e18b10ed5621d19254d5547c0276eb036912f63e07fd092 AS build
 
 WORKDIR /src
 

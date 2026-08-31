@@ -17,7 +17,7 @@ RUN mkdir -p /out \
     && if [ -f users.dat ]; then cp users.dat /out/users.dat; fi
 
 # Run with Chainguard's minimal glibc runtime image.
-FROM cgr.dev/trineta.net/glibc-dynamic:latest@sha256:36d7e670c655f156d36f339d4aa14776e3a91003bfb1afc0072a9743a8b979e5
+FROM cgr.dev/trineta.net/glibc-dynamic:latest@sha256:acc3a18718c6832d0171ea0d6d6f4bcedaf271a157302092abb7e708ae48b0a1
 
 WORKDIR /app
 

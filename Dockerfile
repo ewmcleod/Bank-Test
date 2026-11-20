@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Build the C++ application with Chainguard's GCC image.
-FROM cgr.dev/trineta.net/gcc-glibc:latest@sha256:c5b599c7a3168596e4ff81d64fc69ec87d39157f9425ef3734760d95f8dae1ab AS build
+FROM cgr.dev/trineta.net/gcc-glibc:latest@sha256:90436ac57a1ac4f6b1883189614526ad77f6d949d4d5e068b45a2770939176a1 AS build
 
 WORKDIR /src
 
@@ -17,7 +17,7 @@ RUN mkdir -p /out \
     && if [ -f users.dat ]; then cp users.dat /out/users.dat; fi
 
 # Run with Chainguard's minimal glibc runtime image.
-FROM cgr.dev/trineta.net/glibc-dynamic:latest@sha256:36d7e670c655f156d36f339d4aa14776e3a91003bfb1afc0072a9743a8b979e5
+FROM cgr.dev/trineta.net/glibc-dynamic:latest@sha256:94d4bd89a2634604c1db1ce8ef702f473da01d9d93b5ce5a7bc4340868c905ad
 
 WORKDIR /app
 
